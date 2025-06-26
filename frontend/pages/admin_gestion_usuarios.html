@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Usuarios</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const usuarioRaw = localStorage.getItem('usuario');
+      if (!usuarioRaw) return location.href = '/index.html';
+      const usuario = JSON.parse(usuarioRaw);
+      if (usuario.id_rol !== 3) return location.href = '/index.html';
+    });
+  </script>
+</head>
+<body>
+  <h2>Gestión de Usuarios</h2>
+  <button id="logoutBtn">Cerrar sesión</button>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tablaUsuarios"></tbody>
+  </table>
+
+  <script src="../js/admin_gestion_usuarios.js"></script>
+</body>
+</html>

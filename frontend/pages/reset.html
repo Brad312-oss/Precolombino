@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Restablecer Contraseña</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Restablecer Contraseña</h2>
+    <form id="resetForm">
+      <input type="password" id="nuevaContrasena" placeholder="Nueva contraseña" required />
+      <input type="password" id="confirmarContrasena" placeholder="Confirmar contraseña" required />
+      <button type="submit">Cambiar Contraseña</button>
+    </form>
+    <p id="mensaje"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('resetForm');
+    const mensaje = document.getElementById('mensaje');
+
+    // Obtener token y correo desde URL
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const correo = params.get('correo');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nuevaContrasena = document.getElementById('nuevaContrasena').value;
+      const confirmarContrasena = document.getElementById('confirmarContrasena').value;
+
+      if (nuevaContrasena !== confirmarContrasena) {
+        mensaje.textContent = 'Las contraseñas no coinciden';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/cambiar-contrasena', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ correo, token, nuevaContrasena })
+        });
+
+        const data = await res.json();
+        mensaje.textContent = data.message;
+
+        if (res.ok) {
+          form.reset();
+        }
+
+      } catch (error) {
+        mensaje.textContent = 'Error al conectar con el servidor';
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

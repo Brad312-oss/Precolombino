@@ -1,0 +1,18 @@
+<!-- cliente.html (igual estructura para operario y admin cambiando el título) -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cliente</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <h2>Bienvenido Cliente</h2>
+   <button id="logoutBtn">Cerrar sesión</button>
+<script>
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    window.location.replace('/index.html'); // Redirige al archivo que borra la sesión
+  });
+</script>
+</body>
+</html>

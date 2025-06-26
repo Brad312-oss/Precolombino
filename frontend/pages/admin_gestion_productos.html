@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const usuarioRaw = localStorage.getItem('usuario');
+    if (!usuarioRaw) {
+      window.location.replace('/index.html');
+      return;
+    }
+
+    const usuario = JSON.parse(usuarioRaw);
+    if (!usuario || Number(usuario.id_rol) !== 3) {
+      window.location.replace('/index.html');
+      return;
+    }
+
+    // Forzar recarga si se vuelve atrás con el navegador
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted || window.performance?.navigation.type === 2) {
+        window.location.reload();
+      }
+    });
+  });
+</script>
+</head>
+<body>
+  <h2 id="saludo">Bienvenido Admin</h2>
+  <button id="logoutBtn">Cerrar sesión</button>
+
+  <h3>Gestión de Piezas</h3>
+<form id="formPieza">
+  <input type="text" id="nuevaPieza" placeholder="Nombre de la pieza" required />
+  <button type="submit">Agregar Pieza</button>
+</form>
+
+<!-- 🆕 Tabla de piezas -->
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody id="tablaPiezas"></tbody>
+</table>
+
+<h3>Gestión de Tamaños</h3>
+<form id="formTamanio">
+  <input type="text" id="nuevoTamanio" placeholder="Nombre del tamaño" required />
+  <button type="submit">Agregar Tamaño</button>
+</form>
+
+<!-- 🆕 Tabla de tamaños -->
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody id="tablaTamanios"></tbody>
+</table>
+
+
+<h3>Gestión de Culturas</h3>
+<form id="formCultura">
+  <input type="text" id="nuevaCultura" placeholder="Nombre de la cultura" required />
+  <button type="submit">Agregar Cultura</button>
+</form>
+
+<!-- 🆕 Tabla de culturas -->
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody id="tablaCulturas"></tbody>
+</table>
+
+  <h3>Gestión de Productos</h3>
+
+  <!-- Formulario para agregar o editar producto -->
+  <form id="formProducto">
+  <input type="hidden" id="productoId" />
+    
+    <!-- Cambios marcados con comentarios -->
+<select id="piezas_id" name="piezas_id" required></select> <!-- ✅ agregado name -->
+<select id="cultura_id" name="cultura_id" required></select> <!-- ✅ agregado name -->
+<select id="tamanio_id" name="tamanio_id" required></select> <!-- ✅ agregado name -->
+
+<input type="file" id="imagen" name="imagen" required /> <!-- ⚠️ cambia el id a "imagen" -->
+<label for="descripcion">Descripción:</label>
+<textarea id="descripcion" name="descripcion" required></textarea>
+<input type="number" id="precio" name="precio" required /> <!-- ✅ agregado name -->
+<input type="number" id="stock" name="stock" required /> <!-- ✅ agregado name -->
+
+
+    <button type="submit">Guardar Producto</button>
+  </form>
+
+  <!-- Tabla de productos -->
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Pieza</th>
+        <th>Cultura</th>
+        <th>Tamaño</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tablaProductos"></tbody>
+  </table>
+
+  <script>
+    const nombre = localStorage.getItem('nombre');
+    const apellido = localStorage.getItem('apellido');
+    const saludo = document.getElementById('saludo');
+
+    if (nombre && apellido && saludo) {
+      saludo.textContent = `Bienvenido, ${nombre} ${apellido}`;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.replace('/index.html');
+    });
+  </script>
+  
+
+  <script src="../js/admin_gestion_productos.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <h2>Registro</h2>
+  <form id="registroForm">
+    <input type="text" id="nombre" placeholder="Nombre" required />
+    <input type="text" id="apellido" placeholder="Apellido" required />
+    <input type="email" id="correo" placeholder="Correo" required />
+    <input type="text" id="cedula" placeholder="Cedula" required />
+    <input type="text" id="telefono" placeholder="Telefono" required />
+    <input type="text" id="direccion" placeholder="Direccion" required />
+    <input type="datetime-local" id="fecha_registro" placeholder="Fecha_registro" required />
+    <input type="password" id="contrasena" placeholder="Contraseña" required />
+    <select id="rol_id">
+      <option value="1">Cliente</option>
+      <option value="2">Operario</option>
+      <option value="3">Admin</option>
+    </select>
+    <button type="submit">Registrar</button>
+  </form>
+  <script src="../js/register.js"></script>
+</body>
+</html>
