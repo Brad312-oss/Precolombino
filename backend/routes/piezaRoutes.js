@@ -11,7 +11,7 @@ import { verificarUsuario, autorizarRoles } from '../middleware/authMiddleware.j
 const router = express.Router();
 
 router.get('/', listarPiezas);
-router.post('/', verificarUsuario, autorizarRoles(3), crearPieza);
-router.delete('/:id', verificarUsuario, autorizarRoles(3), eliminarPieza);
+router.post('/', verificarUsuario, autorizarRoles([3]), crearPieza);
+router.delete('/:id', verificarUsuario, autorizarRoles([3]), eliminarPieza);
 
 export default router;

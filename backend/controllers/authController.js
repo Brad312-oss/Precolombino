@@ -6,7 +6,6 @@ import { pool } from '../config/db.js';
 import {
   buscarUsuarioPorCorreo,
   crearUsuario,
-  obtenerRolPorId
 } from '../models/userModel.js';
 
 export const register = async (req, res) => {
@@ -50,7 +49,7 @@ export const login = async (req, res) => {
 
   // ✅ Generar token JWT
   const token = jwt.sign(
-    { correo: usuario.correo, id_rol: usuario.id_rol },
+    { id: usuario.usuario_id, correo: usuario.correo, id_rol: usuario.id_rol },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );

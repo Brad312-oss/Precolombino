@@ -73,33 +73,35 @@ export const crearVenta = async (req, res) => {
 };
 
 // Listar todas las ventas con detalles
-export const listarVentasConDetalles = async (req, res) => {
+export async function listarVentasConDetalles(req, res) {
   try {
-    const [ventas] = await pool.query(`
-      SELECT v.venta_id, v.fecha, v.total, u.nombre AS cliente
-      FROM ventas v
-      JOIN usuarios u ON v.usuario_id = u.usuario_id
-      ORDER BY v.fecha DESC
-    `);
+    const { id } = req.query;
 
-    for (const venta of ventas) {
+    if (id) {
+      // Obtener solo el detalle de UNA venta
       const [detalles] = await pool.query(`
-        SELECT d.producto_id, p.nombre_pieza, d.cantidad, d.subtotal
-        FROM detalle_de_venta d
-        JOIN productos pr ON d.producto_id = pr.producto_id
-        JOIN piezas p ON pr.piezas_id = p.piezas_id
-        WHERE d.venta_id = ?
-      `, [venta.venta_id]);
-
-      venta.detalles = detalles;
+        SELECT dv.*, pi.nombre_pieza AS nombre_producto
+        FROM detalle_de_venta dv
+        JOIN productos pr ON dv.producto_id = pr.producto_id
+        JOIN piezas pi ON pr.piezas_id = pi.piezas_id
+        WHERE dv.venta_id = ?
+        `, [id]);
+      return res.json(detalles);
     }
 
+    // Si no hay ?id, listar TODAS las ventas
+    const [ventas] = await pool.query(`
+      SELECT v.venta_id AS venta_id, u.nombre AS nombre_cliente, v.fecha, v.estado, v.total
+      FROM ventas v
+      JOIN usuarios u ON v.usuario_id = u.usuario_id
+    `);
+
     res.json(ventas);
-  } catch (error) {
-    console.error('Error al listar ventas:', error);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Error al obtener las ventas' });
   }
-};
+}
 
 // Obtener reporte simple de ventas
 export const obtenerReporte = async (req, res) => {
@@ -116,3 +118,46 @@ export const obtenerReporte = async (req, res) => {
 
 // Alias para crearVenta
 export const registrarVenta = crearVenta;
+
+// Actualizar estado de una venta
+export const actualizarEstadoVenta = async (req, res) => {
+  const { venta_id } = req.params;
+  const { estado } = req.body;
+
+  if (!['en proceso', 'entregada', 'cancelada'].includes(estado)) {
+    return res.status(400).json({ message: 'Estado inválido' });
+  }
+
+  try {
+    const [result] = await pool.query(
+      'UPDATE ventas SET estado = ? WHERE venta_id = ?',
+      [estado, venta_id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Venta no encontrada' });
+    }
+
+    res.json({ message: 'Estado de la venta actualizado correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar estado de la venta:', error);
+    res.status(500).json({ message: 'Error al actualizar el estado de la venta' });
+  }
+};
+
+// Obtener todas las ventas (sin detalles)
+export const obtenerVentas = async (req, res) => {
+  try {
+    const [ventas] = await pool.query(`
+      SELECT v.venta_id, u.nombre AS nombre_cliente, v.fecha, v.total, v.estado
+      FROM ventas v
+      JOIN usuarios u ON v.usuario_id = u.usuario_id
+      ORDER BY v.fecha DESC
+    `);
+
+    res.json(ventas);
+  } catch (error) {
+    console.error('Error al obtener ventas:', error);
+    res.status(500).json({ message: 'Error al obtener las ventas' });
+  }
+};

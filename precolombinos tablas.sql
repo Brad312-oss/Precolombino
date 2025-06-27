@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `ventas` (
 `usuario_id` INT NOT NULL,
 `fecha` DATE NOT NULL,
 `total` DECIMAL(10,2) NOT NULL,
+`estado` VARCHAR(50) DEFAULT 'en proceso',
 PRIMARY KEY (`venta_id`),
 FOREIGN KEY (`usuario_id`)
 REFERENCES `precolombinos`.`usuarios` (`usuario_id`)

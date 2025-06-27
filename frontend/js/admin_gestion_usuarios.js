@@ -85,6 +85,11 @@ async function listarUsuarios() {
 }
 
 async function banearUsuario(id) {
+  const usuarioActual = JSON.parse(localStorage.getItem('usuario'));
+  if (usuarioActual.usuario_id === id) {
+    return alert('No puedes banearte a ti mismo');
+  }
+
   if (!confirm('¿Estás seguro de banear este usuario?')) return;
 
   try {
@@ -164,6 +169,11 @@ async function editarUsuario(id) {
 }
 
 async function eliminarUsuario(id) {
+  const usuarioActual = JSON.parse(localStorage.getItem('usuario'));
+  if (usuarioActual.usuario_id === id) {
+    return alert('No puedes eliminarte a ti mismo');
+  }
+
   if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
 
   try {

@@ -8,6 +8,7 @@ export async function obtenerIdRolPorNombre(nombreRol) {
 }
 
 // ✅ Verifica el token JWT y añade los datos del usuario a req.usuario
+
 export async function verificarUsuario(req, res, next) {
   const authHeader = req.headers.authorization;
 
@@ -19,6 +20,8 @@ export async function verificarUsuario(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Opcional: puedes validar también que el ID exista y esté activo en la base de datos
     const [result] = await pool.query(
       'SELECT estado FROM usuarios WHERE correo = ?',
       [decoded.correo]
@@ -31,8 +34,10 @@ export async function verificarUsuario(req, res, next) {
     if (result[0].estado === 'baneado') {
       return res.status(403).json({ message: 'Usuario baneado. Acceso denegado.' });
     }
-    
-    req.usuario = decoded; // ahora puedes usar req.usuario.correo, req.usuario.id, req.usuario.id_rol
+
+    // ✅ Esta línea es esencial para que el frontend obtenga el rol y demás datos
+    req.usuario = decoded;
+
     next();
   } catch (error) {
     return res.status(403).json({ message: 'Token inválido o expirado' });
@@ -40,35 +45,19 @@ export async function verificarUsuario(req, res, next) {
 }
 
 // ✅ Autoriza por roles (por ID de rol)
-export function autorizarRoles(...rolesPermitidos) {
+// En authMiddleware.js
+export function autorizarRoles(rolesPermitidos) {
   return (req, res, next) => {
-    if (!req.usuario || !rolesPermitidos.includes(req.usuario.id_rol)) {
-      return res.status(403).json({ mensaje: 'Acceso no autorizado por rol' });
+    if (!Array.isArray(rolesPermitidos)) {
+      return res.status(500).json({ message: 'Error interno: rolesPermitidos debe ser un array' });
     }
+
+    const rolUsuario = req.usuario.id_rol;
+
+    if (!rolesPermitidos.includes(rolUsuario)) {
+      return res.status(403).json({ mensaje: 'Acceso denegado. No tienes permisos.' });
+    }
+
     next();
   };
-}
-
-// ✅ Verifica correo y rol directamente (opcional, solo si lo usas)
-export async function verificarRol(req, res, next) {
-  try {
-    const { correo, rol } = req.body;
-    if (!correo || !rol) {
-      return res.status(400).json({ mensaje: 'Correo y rol son requeridos' });
-    }
-
-    const [result] = await pool.query(
-      'SELECT * FROM usuarios WHERE correo = ? AND id_rol = ?',
-      [correo, rol]
-    );
-
-    if (result.length === 0) {
-      return res.status(403).json({ mensaje: 'Acceso no autorizado: rol incorrecto' });
-    }
-
-    next();
-  } catch (error) {
-    console.error('Error en verificarRol:', error);
-    res.status(500).json({ mensaje: 'Error del servidor al verificar el rol' });
-  }
 }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Ventas - Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const usuarioRaw = localStorage.getItem('usuario');
+    if (!usuarioRaw) return location.href = '/index.html';
+    const usuario = JSON.parse(usuarioRaw);
+    if (usuario.id_rol !== 3) return location.href = '/index.html';
+  });
+</script>
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración - Ventas</h1>
+    <nav>
+      <a href="admin_dashboard.html">Dashboard</a>
+      <a href="admin_gestion_productos.html">Productos</a>
+      <a href="admin_gestion_usuarios.html">Usuarios</a>
+      <a href="admin_gestion_reportes.html">Reportes</a>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Lista de Ventas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Venta</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaVentas">
+          <!-- Aquí se insertarán las filas con JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+  <h2>Registrar Nueva Venta</h2>
+  <form id="formRegistrarVenta">
+    <label for="clienteSelect">Cliente:</label>
+    <select id="clienteSelect" name="cliente" required></select>
+
+    <label>Productos:</label>
+    <table id="productosVenta">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Subtotal</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button type="button" id="agregarProducto">+ Agregar Producto</button>
+
+    <p><strong>Total:</strong> $<span id="totalVenta">0.00</span></p>
+
+    <button type="submit">Registrar Venta</button>
+  </form>
+</section>
+  </main>
+
+  <script src="../js/admin_gestion_ventas.js"></script>
+  <script>
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.clear();
+      window.location.replace('/index.html');
+    });
+  }
+</script>
+</body>
+</html>

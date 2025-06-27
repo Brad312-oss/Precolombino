@@ -1,21 +1,24 @@
 // backend/routes/ventaRoutes.js
 import express from 'express';
 import {
+  obtenerVentas,
   obtenerReporte,
   listarVentasConDetalles,
-  crearVenta
+  crearVenta,
+  actualizarEstadoVenta
 } from '../controllers/ventaController.js';
+
 import {
   verificarUsuario,
-  autorizarRoles,
-  verificarRol // opcional
+  autorizarRoles
 } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/reporte', obtenerReporte);
-router.get('/detalles', listarVentasConDetalles);
-
-router.post('/', verificarUsuario, autorizarRoles(2, 3), crearVenta);
+router.get('/reporte', verificarUsuario, autorizarRoles([3]), obtenerReporte);
+router.get('/ventas', verificarUsuario, autorizarRoles([3]), obtenerVentas); // ✅ admin
+router.get('/detalles', verificarUsuario, autorizarRoles([3]), listarVentasConDetalles);
+router.put('/actualizar-estado/:venta_id', verificarUsuario, autorizarRoles([3]), actualizarEstadoVenta);
+router.post('/', verificarUsuario, autorizarRoles([3]), crearVenta);
 
 export default router;

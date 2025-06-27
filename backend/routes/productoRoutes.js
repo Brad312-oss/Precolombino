@@ -22,7 +22,7 @@ router.post(
   '/',
   upload.single('imagen'),      // 🔄 primero procesa form-data
   verificarUsuario,             // luego verifica usuario con req.body ya definido
-  autorizarRoles(3),
+  autorizarRoles([3]),
   agregarProducto
 );
 
@@ -30,14 +30,14 @@ router.put(
   '/:id',
   upload.single('imagen'),       // Procesa FormData
   verificarUsuario,
-  autorizarRoles(3),
+  autorizarRoles([3]),
   editarProducto
 );
 
 router.delete(
   '/:id',
   verificarUsuario,
-  autorizarRoles(3),
+  autorizarRoles([3]),
   eliminarProducto
 );
 

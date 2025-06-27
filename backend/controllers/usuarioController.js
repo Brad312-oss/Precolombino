@@ -137,3 +137,17 @@ export const desbanearUsuario = async (req, res) => {
     res.status(500).json({ message: 'Error al desbanear usuario' });
   }
 };
+
+export const obtenerClientes = async (req, res) => {
+  try {
+    const [clientes] = await pool.query(`
+      SELECT usuario_id, nombre, apellido, correo 
+      FROM usuarios 
+      WHERE id_rol = ? AND estado = "activo"
+    `, [1]); // Rol cliente
+    res.json(clientes);
+  } catch (error) {
+    console.error('Error al obtener clientes:', error);
+    res.status(500).json({ message: 'Error al obtener clientes' });
+  }
+};
