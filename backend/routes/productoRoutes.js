@@ -5,7 +5,9 @@ import {
   obtenerStockProducto,
   agregarProducto,
   editarProducto,
-  eliminarProducto
+  eliminarProducto,
+  obtenerReporteProductos,
+  obtenerProductoDetalle
 } from '../controllers/productoController.js';
 
 import { verificarUsuario, autorizarRoles } from '../middleware/authMiddleware.js';
@@ -13,26 +15,11 @@ import { upload } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
+router.get('/reporte/productos', verificarUsuario, autorizarRoles([3]), obtenerReporteProductos);
+
 // 📦 Rutas públicas
 router.get('/', listarProductos);
 router.get('/stock/:id', obtenerStockProducto);
-
-// 🛡️ Rutas protegidas (solo admin: rol 3)
-router.post(
-  '/',
-  upload.single('imagen'),      // 🔄 primero procesa form-data
-  verificarUsuario,             // luego verifica usuario con req.body ya definido
-  autorizarRoles([3]),
-  agregarProducto
-);
-
-router.put(
-  '/:id',
-  upload.single('imagen'),       // Procesa FormData
-  verificarUsuario,
-  autorizarRoles([3]),
-  editarProducto
-);
 
 router.delete(
   '/:id',
@@ -41,4 +28,26 @@ router.delete(
   eliminarProducto
 );
 
+// 🛡️ Rutas protegidas (solo admin: rol 3)
+router.post(
+  '/',
+  verificarUsuario,
+  autorizarRoles([3]),
+  upload.single('imagen'),
+  agregarProducto
+);
+
+router.put(
+  '/:id',
+  verificarUsuario,
+  autorizarRoles([3]),
+  upload.single('imagen'),
+  editarProducto
+);
+
+router.get('/:id', obtenerProductoDetalle);
+
 export default router;
+
+
+

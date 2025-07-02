@@ -9,6 +9,9 @@
 <body>
   <h2>Bienvenido Cliente</h2>
    <button id="logoutBtn">Cerrar sesión</button>
+   <h2>Catálogo de Productos</h2>
+   <div id="catalogo" class="catalogo-container"></div>
+<script src="../js/cliente.js" type="module"></script>
 <script>
   document.getElementById('logoutBtn').addEventListener('click', () => {
     window.location.replace('/index.html'); // Redirige al archivo que borra la sesión

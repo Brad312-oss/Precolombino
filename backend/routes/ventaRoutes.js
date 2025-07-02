@@ -1,11 +1,11 @@
 // backend/routes/ventaRoutes.js
 import express from 'express';
 import {
-  obtenerVentas,
-  obtenerReporte,
-  listarVentasConDetalles,
   crearVenta,
-  actualizarEstadoVenta
+  listarVentasConDetalles,
+  actualizarEstadoVenta,
+  obtenerVentas,
+  generarReporteFiltrado
 } from '../controllers/ventaController.js';
 
 import {
@@ -15,10 +15,10 @@ import {
 
 const router = express.Router();
 
-router.get('/reporte', verificarUsuario, autorizarRoles([3]), obtenerReporte);
 router.get('/ventas', verificarUsuario, autorizarRoles([3]), obtenerVentas); // ✅ admin
 router.get('/detalles', verificarUsuario, autorizarRoles([3]), listarVentasConDetalles);
 router.put('/actualizar-estado/:venta_id', verificarUsuario, autorizarRoles([3]), actualizarEstadoVenta);
-router.post('/', verificarUsuario, autorizarRoles([3]), crearVenta);
+router.get('/reporte/filtrado', verificarUsuario, autorizarRoles([3]), generarReporteFiltrado);
+router.post('/', verificarUsuario, crearVenta);
 
 export default router;

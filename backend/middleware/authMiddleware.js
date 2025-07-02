@@ -9,40 +9,39 @@ export async function obtenerIdRolPorNombre(nombreRol) {
 
 // ✅ Verifica el token JWT y añade los datos del usuario a req.usuario
 
-export async function verificarUsuario(req, res, next) {
-  const authHeader = req.headers.authorization;
+export const verificarUsuario = async (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     return res.status(401).json({ message: 'Token no proporcionado' });
   }
-
-  const token = authHeader.split(' ')[1];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Opcional: puedes validar también que el ID exista y esté activo en la base de datos
+    // ✅ Verificar si el usuario existe y está activo
     const [result] = await pool.query(
-      'SELECT estado FROM usuarios WHERE correo = ?',
-      [decoded.correo]
+      'SELECT estado FROM usuarios WHERE usuario_id = ?',
+      [decoded.usuario_id]
     );
 
-    if (result.length === 0) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+    if (!result.length || result[0].estado !== 'activo') {
+      return res.status(401).json({ message: 'Usuario inactivo o no encontrado' });
     }
 
-    if (result[0].estado === 'baneado') {
-      return res.status(403).json({ message: 'Usuario baneado. Acceso denegado.' });
-    }
-
-    // ✅ Esta línea es esencial para que el frontend obtenga el rol y demás datos
-    req.usuario = decoded;
+    // ✅ Guardar datos del usuario en el request
+    req.usuario = {
+      id: decoded.usuario_id,
+      correo: decoded.correo,
+      id_rol: decoded.id_rol
+    };
 
     next();
   } catch (error) {
-    return res.status(403).json({ message: 'Token inválido o expirado' });
+    console.error('Error en verificarUsuario:', error);
+    return res.status(401).json({ message: 'Token inválido o usuario no autenticado' });
   }
-}
+};
 
 // ✅ Autoriza por roles (por ID de rol)
 // En authMiddleware.js

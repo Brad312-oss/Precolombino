@@ -277,3 +277,6 @@ function actualizarTotalVenta() {
   });
   document.getElementById('totalVenta').textContent = total.toFixed(2);
 }
+
+
+

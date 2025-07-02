@@ -53,7 +53,22 @@ export const obtenerDetallesVenta = async (venta_id) => {
 
 export const obtenerReporteVentas = async () => {
   const [reporte] = await pool.query(`
-    SELECT COUNT(*) AS total_ventas, SUM(total) AS total_ingresos FROM ventas
+    SELECT 
+      v.venta_id,
+      v.fecha,
+      v.estado,
+      v.total,
+      u.nombre AS cliente_nombre,
+      u.apellido AS cliente_apellido,
+      p.producto_id,
+      p.descripcion,
+      dv.cantidad,
+      dv.subtotal
+    FROM ventas v
+    JOIN usuarios u ON v.usuario_id = u.usuario_id
+    JOIN detalle_de_venta dv ON v.venta_id = dv.venta_id
+    JOIN productos p ON dv.producto_id = p.producto_id
+    ORDER BY v.fecha DESC
   `);
-  return reporte[0];
+  return reporte;
 };

@@ -151,3 +151,50 @@ export const obtenerClientes = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener clientes' });
   }
 };
+
+export const obtenerEstadisticasUsuarios = async (req, res) => {
+  const { fechaInicio, fechaFin } = req.query;
+  try {
+    // 1) Conteos generales
+    const [[{ total_nuevos }]] = await pool.query(
+      `SELECT COUNT(*) AS total_nuevos
+         FROM usuarios
+        WHERE fecha_registro BETWEEN ? AND ?`,
+      [fechaInicio, fechaFin]
+    );
+    // 2) Conteo por rol
+    const [porRol] = await pool.query(
+      `SELECT r.nombre AS rol, COUNT(*) AS cantidad
+         FROM usuarios u
+         JOIN roles r ON u.id_rol = r.rol_id
+        WHERE u.fecha_registro BETWEEN ? AND ?
+        GROUP BY u.id_rol`,
+      [fechaInicio, fechaFin]
+    );
+    // 3) Detalle de nuevos usuarios con su último login
+    const [detalle] = await pool.query(
+      `SELECT u.usuario_id, u.nombre, u.apellido, u.correo,
+              r.nombre AS rol, u.estado, u.fecha_registro, u.last_login
+         FROM usuarios u
+         JOIN roles r ON u.id_rol = r.rol_id
+        WHERE u.fecha_registro BETWEEN ? AND ?
+        ORDER BY u.fecha_registro DESC`,
+      [fechaInicio, fechaFin]
+    );
+    // Conteo de usuarios baneados
+    const [[{ total_baneados }]] = await pool.query(
+      `SELECT COUNT(*) AS total_baneados
+      FROM usuarios
+      WHERE estado = 'baneado'
+      AND fecha_registro BETWEEN ? AND ?`,
+      [fechaInicio, fechaFin]
+    );
+    res.json({
+      resumen: { total_nuevos, total_baneados, porRol },
+      detalle
+    });
+  } catch (error) {
+    console.error('Error al obtener estadísticas de usuarios:', error);
+    res.status(500).json({ message: 'Error al generar estadísticas' });
+  }
+};

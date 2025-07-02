@@ -7,7 +7,8 @@ import {
   eliminarUsuario,
   enviarCorreoUsuario,
   desbanearUsuario,
-  obtenerClientes
+  obtenerClientes,
+  obtenerEstadisticasUsuarios,
 } from '../controllers/usuarioController.js';
 import { verificarUsuario, autorizarRoles,} from '../middleware/authMiddleware.js';
 
@@ -22,5 +23,6 @@ router.put('/:usuario_id/banear', verificarUsuario, autorizarRoles([3]), banearU
 router.delete('/eliminar/:usuario_id', verificarUsuario, autorizarRoles([3]), eliminarUsuario);
 router.post('/enviar-correo', verificarUsuario, autorizarRoles([3]), enviarCorreoUsuario);
 router.put('/desbanear', verificarUsuario, autorizarRoles([3]), desbanearUsuario);
+router.get('/reporte/usuarios', verificarUsuario, autorizarRoles([3]), obtenerEstadisticasUsuarios);
 
 export default router;

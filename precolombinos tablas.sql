@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 `reset_token` VARCHAR(255) DEFAULT NULL,
 `reset_token_expira` DATETIME DEFAULT NULL,
 `estado` VARCHAR(20) DEFAULT 'activo',
+`last_login` DATETIME DEFAULT NULL,
+`fecha_baneo` DATETIME NULL,
 FOREIGN KEY (`id_rol`) REFERENCES roles(`rol_id`),
 PRIMARY KEY (`usuario_id`)
 );
@@ -65,6 +67,8 @@ CREATE TABLE IF NOT EXISTS `productos` (
 `fecha_modificacion` DATE NOT NULL,
 `precio` DECIMAL(10,2) NOT NULL,
 `stock` INT NOT NULL,
+`estado` VARCHAR(20) DEFAULT 'disponible',
+`modificado_por` INT,
 PRIMARY KEY (`producto_id`),
 FOREIGN KEY (`piezas_id`)
 REFERENCES `precolombinos`.`piezas` (`piezas_id`)
@@ -74,7 +78,8 @@ REFERENCES `precolombinos`.`cultura` (`cultura_id`)
 ON DELETE CASCADE,
 FOREIGN KEY (`tamanio_id`)
 REFERENCES `precolombinos`.`tamanio` (`tamanio_id`)
-ON DELETE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (`modificado_por`) REFERENCES `usuarios`(`usuario_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `detalle_de_venta` (
@@ -90,4 +95,15 @@ ON DELETE CASCADE,
 FOREIGN KEY (`producto_id`)
 REFERENCES `precolombinos`.`productos` (`producto_id`)
 ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `historial_inventario` (
+`id` INT AUTO_INCREMENT PRIMARY KEY,
+`producto_id` INT NOT NULL,
+`admin_id` INT NOT NULL,
+`accion` VARCHAR(50),
+`cantidad` INT,
+`fecha` DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (producto_id) REFERENCES productos(producto_id),
+FOREIGN KEY (admin_id) REFERENCES usuarios(usuario_id)
 );

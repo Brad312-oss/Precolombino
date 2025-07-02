@@ -28,10 +28,16 @@
 </script>
 </head>
 <body>
-  <h2 id="saludo">Bienvenido Admin</h2>
-  <button id="logoutBtn">Cerrar sesión</button>
-
-  <h3>Gestión de Piezas</h3>
+  <header>
+    <h1>Panel de Administración - Productos</h1>
+    <nav>
+      <a href="admin_dashboard.html">Dashboard</a>
+      <a href="admin_gestion_usuarios.html">Usuarios</a>
+      <a href="admin_gestion_ventas.html">ventas</a>
+      <a href="admin_gestion_reportes.html">Reportes</a>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </nav>
+  </header>
 <form id="formPieza">
   <input type="text" id="nuevaPieza" placeholder="Nombre de la pieza" required />
   <button type="submit">Agregar Pieza</button>

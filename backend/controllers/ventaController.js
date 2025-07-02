@@ -2,7 +2,17 @@ import pool from '../config/db.js';
 
 // Registrar una nueva venta
 export const crearVenta = async (req, res) => {
-  const { usuario_id, fecha, total, productos } = req.body;
+  if (!req.usuario || !req.usuario.id || isNaN(req.usuario.id)) {
+    return res.status(401).json({ message: 'Token inválido o usuario no autenticado' });
+  }
+
+  console.log('BODY RECIBIDO EN /api/ventas:', req.body);
+  const { fecha, total, productos } = req.body;
+
+  // ✅ Obtener el ID del usuario dependiendo del rol
+  const usuario_id = req.usuario.id_rol === 3 && req.body.usuario_id
+    ? req.body.usuario_id
+    : req.usuario.id;
 
   if (!usuario_id || isNaN(usuario_id)) {
     return res.status(400).json({ message: 'ID de usuario inválido' });
@@ -103,19 +113,6 @@ export async function listarVentasConDetalles(req, res) {
   }
 }
 
-// Obtener reporte simple de ventas
-export const obtenerReporte = async (req, res) => {
-  try {
-    const [reporte] = await pool.query(`
-      SELECT COUNT(*) AS total_ventas, SUM(total) AS total_ingresos FROM ventas
-    `);
-    res.json(reporte[0]);
-  } catch (error) {
-    console.error('Error al generar el reporte:', error);
-    res.status(500).json({ message: 'Error al obtener el reporte' });
-  }
-};
-
 // Alias para crearVenta
 export const registrarVenta = crearVenta;
 
@@ -159,5 +156,75 @@ export const obtenerVentas = async (req, res) => {
   } catch (error) {
     console.error('Error al obtener ventas:', error);
     res.status(500).json({ message: 'Error al obtener las ventas' });
+  }
+};
+
+// ✅ Reporte completo de ventas (productos + usuario + detalles)
+export const generarReporteFiltrado = async (req, res) => {
+  try {
+    const {
+      comprador,
+      cultura,
+      producto,
+      estado,
+      fechaInicio,
+      fechaFin
+    } = req.query;
+
+    let query = `
+      SELECT 
+        v.venta_id,
+        v.fecha,
+        v.estado,
+        v.total,
+        u.nombre AS cliente_nombre,
+        u.apellido AS cliente_apellido,
+        dv.cantidad,
+        dv.subtotal,
+        CONCAT(pi.nombre_pieza, ' ', cu.cultura, ' ', t.tamanio) AS producto_nombre
+      FROM ventas v
+      JOIN usuarios u ON v.usuario_id = u.usuario_id
+      JOIN detalle_de_venta dv ON v.venta_id = dv.venta_id
+      JOIN productos p ON dv.producto_id = p.producto_id
+      JOIN piezas pi ON p.piezas_id = pi.piezas_id
+      JOIN cultura cu ON p.cultura_id = cu.cultura_id
+      JOIN tamanio t ON p.tamanio_id = t.tamanio_id
+      WHERE 1=1
+    `;
+
+    const params = [];
+
+    if (comprador) {
+      query += ` AND CONCAT(u.nombre, ' ', u.apellido) LIKE ?`;
+      params.push(`%${comprador}%`);
+    }
+
+    if (cultura) {
+      query += ` AND cu.cultura LIKE ?`;
+      params.push(`%${cultura}%`);
+    }
+
+    if (producto) {
+      query += ` AND CONCAT(pi.nombre_pieza, ' ', cu.cultura, ' ', t.tamanio) LIKE ?`;
+      params.push(`%${producto}%`);
+    }
+
+    if (estado) {
+      query += ` AND v.estado = ?`;
+      params.push(estado);
+    }
+
+    if (fechaInicio && fechaFin) {
+      query += ` AND v.fecha BETWEEN ? AND ?`;
+      params.push(fechaInicio, fechaFin);
+    }
+
+    query += ` ORDER BY v.fecha DESC`;
+
+    const [filtrado] = await pool.query(query, params);
+    res.json(filtrado);
+  } catch (error) {
+    console.error('Error al generar reporte filtrado:', error);
+    res.status(500).json({ mensaje: 'Error al generar el reporte filtrado' });
   }
 };

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reportes - Admin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración - Usuarios</h1>
+    <nav>
+      <a href="admin_dashboard.html">Dashboard</a>
+      <a href="admin_gestion_productos.html">Productos</a>
+      <a href="admin_gestion_ventas.html">Ventas</a>
+      <a href="admin_gestion_usuarios.html">Usuarios</a>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Reportes del Sistema</h2>
+
+    <!-- Selector de tipo de reporte -->
+    <div>
+      <label for="tipoReporte">Selecciona tipo de reporte:</label>
+      <select id="tipoReporte">
+        <option value="ventas">Ventas</option>
+        <option value="usuarios">Usuarios</option>
+        <option value="productos">Productos</option>
+      </select>
+    </div>
+
+    <!-- Reporte de Ventas -->
+    <section id="reporteVentas">
+      <h3>Reporte de Ventas</h3>
+
+      <div class="filtros-reporte">
+        <label>Comprador: <input type="text" id="filtroComprador"></label>
+        <label>Cultura: <input type="text" id="filtroCultura"></label>
+        <label>Producto: <input type="text" id="filtroProducto"></label>
+        <label>Estado: 
+          <select id="filtroEstado">
+            <option value="">Todos</option>
+            <option value="en proceso">En proceso</option>
+            <option value="entregada">Entregada</option>
+            <option value="cancelada">Cancelada</option>
+          </select>
+        </label>
+        <label>Desde: <input type="date" id="fechaInicio"></label>
+        <label>Hasta: <input type="date" id="fechaFin"></label>
+        <button id="btnFiltrar1">Filtrar</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Productos</th>
+          </tr>
+        </thead>
+        <tbody id="tablaReporteVentas"></tbody>
+      </table>
+
+      <h4>Comparar con otro reporte</h4>
+
+      <div class="filtros-reporte">
+        <label>Comprador: <input type="text" id="filtroComprador2"></label>
+        <label>Cultura: <input type="text" id="filtroCultura2"></label>
+        <label>Producto: <input type="text" id="filtroProducto2"></label>
+        <label>Estado: 
+          <select id="filtroEstado2">
+            <option value="">Todos</option>
+            <option value="en proceso">En proceso</option>
+            <option value="entregada">Entregada</option>
+            <option value="cancelada">Cancelada</option>
+          </select>
+        </label>
+        <label>Desde: <input type="date" id="fechaInicio2"></label>
+        <label>Hasta: <input type="date" id="fechaFin2"></label>
+        <button id="btnFiltrar2">Filtrar</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Productos</th>
+          </tr>
+        </thead>
+        <tbody id="tablaReporteVentas2"></tbody>
+      </table>
+    </section>
+
+    <!-- Reporte de Usuarios (oculto inicialmente) -->
+    <section id="reporteUsuarios" style="display: none;">
+  <h3>Reporte de Usuarios</h3>
+
+  <!-- Filtros -->
+  <section class="filtros">
+    <label>Desde: <input type="date" id="fechaInicioUsuarios"></label>
+    <label>Hasta: <input type="date" id="fechaFinUsuarios"></label>
+    <button id="btnFiltrarUsuarios">Generar Reporte</button>
+  </section>
+
+  <!-- Resumen -->
+  <section id="resumenUsuarios">
+    <p>Total nuevos: <span id="totalNuevos">-</span></p>
+    <p>Total baneados: <span id="totalBaneados">-</span></p>
+    <div id="resumenPorRol">
+      <!-- Aquí se imprimen los roles dinámicamente -->
+    </div>
+  </section>
+
+  <!-- Tabla de detalle -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th>Registro</th>
+        <th>Último Login</th>
+      </tr>
+    </thead>
+    <tbody id="tablaUsuariosReporte"></tbody>
+  </table>
+</section>
+
+    <!-- Reporte de Productos (oculto inicialmente) -->
+    <div id="reporteProductos" style="display: none;">
+  <h2>📦 Reporte de Productos</h2>
+  <button id="btnGenerarReporteProductos">Generar reporte de productos</button>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Stock</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Último admin que modificó</th>
+        <th>Última modificación</th>
+      </tr>
+    </thead>
+    <tbody id="tablaReporteProductos"></tbody>
+  </table>
+</div>
+  </main>
+
+  <!-- Protección de acceso -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const usuarioRaw = localStorage.getItem('usuario');
+      if (!usuarioRaw) return location.href = '/index.html';
+      const usuario = JSON.parse(usuarioRaw);
+      if (usuario.id_rol !== 3) return location.href = '/index.html';
+    });
+  </script>
+
+  <!-- Logout -->
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.replace('/index.html');
+      });
+    }
+  </script>
+
+  <!-- Cambio de tipo de reporte -->
+  <script>
+    document.getElementById('tipoReporte').addEventListener('change', e => {
+      const tipo = e.target.value;
+      document.getElementById('reporteVentas').style.display = tipo === 'ventas' ? 'block' : 'none';
+      document.getElementById('reporteUsuarios').style.display = tipo === 'usuarios' ? 'block' : 'none';
+      document.getElementById('reporteProductos').style.display = tipo === 'productos' ? 'block' : 'none';
+    });
+  </script>
+
+  <!-- JS del módulo -->
+  <script src="../js/admin_gestion_reportes.js"></script>
+</body>
+</html>

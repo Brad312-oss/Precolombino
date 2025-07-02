@@ -5,27 +5,29 @@ export const obtenerProductos = async () => {
   const [rows] = await pool.query(`
     SELECT 
       p.producto_id,
-      p.piezas_id,
-      p.cultura_id,
-      p.tamanio_id,
-      pi.nombre_pieza,
-      c.cultura,
-      t.tamanio,
+      p.descripcion,
+      p.imagen,
       p.precio,
-      p.stock
+      p.stock,
+      c.cultura,
+      pi.nombre_pieza,
+      t.tamanio
     FROM productos p
-    JOIN piezas pi ON p.piezas_id = pi.piezas_id
     JOIN cultura c ON p.cultura_id = c.cultura_id
+    JOIN piezas pi ON p.piezas_id = pi.piezas_id
     JOIN tamanio t ON p.tamanio_id = t.tamanio_id
+    WHERE p.estado = 'disponible'
   `);
   return rows;
 };
 
-export const agregarProducto = async ({ piezas_id, cultura_id, tamanio_id, precio, stock, descripcion, imagen }) => {
+export const agregarProducto = async ({ piezas_id, cultura_id, tamanio_id, precio, stock, descripcion, imagen, modificado_por }) => {
   const [result] = await pool.query(
-  'INSERT INTO productos (piezas_id, cultura_id, tamanio_id, precio, stock, descripcion, imagen, fecha_modificacion) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
-  [piezas_id, cultura_id, tamanio_id, precio, stock, descripcion, imagen]
-);
+    `INSERT INTO productos 
+    (piezas_id, cultura_id, tamanio_id, precio, stock, descripcion, imagen, fecha_modificacion, modificado_por) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)`,
+    [piezas_id, cultura_id, tamanio_id, precio, stock, descripcion, imagen, modificado_por]
+  );
   return result;
 };
 
@@ -62,3 +64,25 @@ export const eliminarProducto = async (id) => {
   );
   return result;
 };
+
+export async function obtenerProductoPorId(id) {
+  const [rows] = await pool.query(`
+    SELECT 
+      p.producto_id,
+      piezas.nombre_pieza AS pieza,
+      cultura.cultura AS cultura,
+      tamanio.tamanio AS tamanio,
+      p.descripcion,
+      p.imagen,
+      p.precio,
+      p.stock,
+      p.estado
+    FROM productos p
+    JOIN piezas ON p.piezas_id = piezas.piezas_id
+    JOIN cultura ON p.cultura_id = cultura.cultura_id
+    JOIN tamanio ON p.tamanio_id = tamanio.tamanio_id
+    WHERE p.producto_id = ?
+  `, [id]);
+
+  return rows[0];
+}

@@ -47,11 +47,16 @@ export const login = async (req, res) => {
     return res.status(403).json({ message: 'Usuario baneado. Acceso denegado.' });
   }
 
-  // ✅ Generar token JWT
   const token = jwt.sign(
-    { id: usuario.usuario_id, correo: usuario.correo, id_rol: usuario.id_rol },
+    { usuario_id: usuario.usuario_id, correo: usuario.correo, id_rol: usuario.id_rol },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+
+  // ✅ Actualizar last_login
+  await pool.query(
+    'UPDATE usuarios SET last_login = NOW() WHERE usuario_id = ?',
+    [usuario.usuario_id]
   );
 
   res.status(200).json({
