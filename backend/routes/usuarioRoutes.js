@@ -9,6 +9,7 @@ import {
   desbanearUsuario,
   obtenerClientes,
   obtenerEstadisticasUsuarios,
+  actualizarPerfilCliente,
 } from '../controllers/usuarioController.js';
 import { verificarUsuario, autorizarRoles,} from '../middleware/authMiddleware.js';
 
@@ -24,5 +25,6 @@ router.delete('/eliminar/:usuario_id', verificarUsuario, autorizarRoles([3]), el
 router.post('/enviar-correo', verificarUsuario, autorizarRoles([3]), enviarCorreoUsuario);
 router.put('/desbanear', verificarUsuario, autorizarRoles([3]), desbanearUsuario);
 router.get('/reporte/usuarios', verificarUsuario, autorizarRoles([3]), obtenerEstadisticasUsuarios);
+router.put('/actualizar-perfil', verificarUsuario, actualizarPerfilCliente);
 
 export default router;

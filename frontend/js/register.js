@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const direccion = getValue('direccion');
             const fecha_registro = getValue('fecha_registro');
             const contraseña = getValue('contrasena');
-            const id_rol = parseInt(getValue('rol_id'));
 
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
@@ -40,8 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     telefono,
                     direccion,
                     fecha_registro,
-                    contraseña,
-                    id_rol
+                    contraseña
                 })
             });
 

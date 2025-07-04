@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cliente</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <h2>Bienvenido Cliente</h2>
+  <button id="logoutBtn">Cerrar sesión</button>
+
+  <h2>Catálogo de Productos</h2>
+  <div id="catalogo" class="catalogo-container"></div>
+
+  <h3>Total: $<span id="total-carrito">0.00</span></h3>
+
+  <h3>Selecciona el tipo de pago:</h3>
+  <select id="tipoPago">
+    <option value="">--Seleccionar--</option>
+    <option value="efectivo">Efectivo</option>
+    <option value="tarjeta">Tarjeta</option>
+    <option value="transferencia">Transferencia</option>
+  </select>
+
+  <br><br>
+  <button id="comprarBtn">Finalizar Compra</button>
+  <script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return window.location.href = '../login.html';
+
+    try {
+      const res = await fetch('/api/auth/verificar', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await res.json();
+      if (!res.ok || data.usuario.id_rol !== 1) {
+        return window.location.href = '../login.html';
+      }
+    } catch (err) {
+      console.error(err);
+      window.location.href = '../login.html';
+    }
+  });
+</script>
+
+  <script src="../js/cliente_catalogo.js" type="module"></script>
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.replace('/index.html');
+    });
+  </script>
+</body>
+</html>

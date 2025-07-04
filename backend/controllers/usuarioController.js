@@ -4,10 +4,11 @@ import { pool } from '../config/db.js';
 export const listarUsuarios = async (req, res) => {
   try {
     const [usuarios] = await pool.query(`
-      SELECT u.usuario_id, u.cedula, u.nombre, u.apellido, u.correo, u.estado, r.nombre AS nombre_rol
+      SELECT u.usuario_id, u.cedula, u.nombre, u.apellido, u.correo, u.estado, u.id_rol, r.nombre AS nombre_rol
       FROM usuarios u
       JOIN roles r ON u.id_rol = r.rol_id
       `);
+
     res.json(usuarios);
   } catch (error) {
     console.error('Error al listar usuarios:', error);
@@ -18,9 +19,15 @@ export const listarUsuarios = async (req, res) => {
 // Cambiar el rol de un usuario
 export const cambiarRolUsuario = async (req, res) => {
   const { usuario_id, nuevo_rol } = req.body;
+  const admin_id = req.usuario?.id; // Obtenido desde el JWT por el authMiddleware
 
   if (!usuario_id || !nuevo_rol) {
     return res.status(400).json({ message: 'Datos incompletos' });
+  }
+
+  // 🚫 Evitar que un admin se quite su propio rol
+  if (parseInt(usuario_id) === parseInt(admin_id) && parseInt(nuevo_rol) !== 3) {
+    return res.status(403).json({ message: 'No puedes quitarte tu propio rol de administrador' });
   }
 
   try {
@@ -196,5 +203,25 @@ export const obtenerEstadisticasUsuarios = async (req, res) => {
   } catch (error) {
     console.error('Error al obtener estadísticas de usuarios:', error);
     res.status(500).json({ message: 'Error al generar estadísticas' });
+  }
+};
+
+// ✅ Actualizar perfil del cliente
+export const actualizarPerfilCliente = async (req, res) => {
+  const { nombre, apellido, correo, telefono, direccion } = req.body;
+  const usuario_id = req.usuario.id;
+
+  console.log('Valores recibidos:', { nombre, apellido, correo, telefono, direccion, usuario_id });
+
+  try {
+    await pool.query(
+      'UPDATE usuarios SET nombre = ?, apellido = ?, correo = ?, telefono = ?, direccion = ? WHERE usuario_id = ?',
+      [nombre, apellido, correo, telefono, direccion, usuario_id]
+    );
+
+    res.json({ message: 'Perfil actualizado correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    res.status(500).json({ message: 'Error al actualizar perfil' });
   }
 };

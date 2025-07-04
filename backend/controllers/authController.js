@@ -9,9 +9,9 @@ import {
 } from '../models/userModel.js';
 
 export const register = async (req, res) => {
-  const { nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, contraseña, id_rol } = req.body;
+  const { nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, contraseña } = req.body;
 
-  if (!nombre || !apellido || !correo || !cedula || !telefono || !direccion || !fecha_registro || !contraseña || !id_rol) {
+  if (!nombre || !apellido || !correo || !cedula || !telefono || !direccion || !fecha_registro || !contraseña) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
@@ -21,9 +21,8 @@ export const register = async (req, res) => {
   }
 
   const hash = await bcrypt.hash(contraseña, 10);
-  const rolNumerico = parseInt(id_rol);
-  await crearUsuario(nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, hash, rolNumerico);
-  // await crearUsuario(nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, hash, id_rol);
+  const id_rol = 1; // cliente
+  await crearUsuario(nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, hash, id_rol);
   await enviarCorreoConfirmacion(correo, nombre);
 
   res.status(201).json({ message: 'Usuario creado exitosamente' });

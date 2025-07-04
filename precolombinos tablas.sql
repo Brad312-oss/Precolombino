@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `ventas` (
 `fecha` DATE NOT NULL,
 `total` DECIMAL(10,2) NOT NULL,
 `estado` VARCHAR(50) DEFAULT 'en proceso',
+`tipo_pago` VARCHAR(50),
 PRIMARY KEY (`venta_id`),
 FOREIGN KEY (`usuario_id`)
 REFERENCES `precolombinos`.`usuarios` (`usuario_id`)
@@ -106,4 +107,14 @@ CREATE TABLE IF NOT EXISTS `historial_inventario` (
 `fecha` DATETIME DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (producto_id) REFERENCES productos(producto_id),
 FOREIGN KEY (admin_id) REFERENCES usuarios(usuario_id)
+);
+
+CREATE TABLE resenas (
+  resena_id INT AUTO_INCREMENT PRIMARY KEY,
+  producto_id INT NOT NULL,
+  usuario_id INT NOT NULL,
+  comentario TEXT NOT NULL,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (producto_id) REFERENCES productos(producto_id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id)
 );

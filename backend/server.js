@@ -39,6 +39,9 @@ app.use('/api/tamanios', tamanioRoutes);
 import usuarioRoutes from './routes/usuarioRoutes.js';
 app.use('/api/usuarios', usuarioRoutes);
 
+import resenaRoutes from './routes/resenaRoutes.js';
+app.use('/api/resenas', resenaRoutes);
+
 // Ruta por defecto
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/login.html'));

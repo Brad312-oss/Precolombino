@@ -28,7 +28,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         window.location.href = '/pages/operario.html';
         break;
         case 1: // cliente
-        window.location.href = '/pages/cliente.html';
+        window.location.href = '/pages/cliente_inicio.html';
         break;
         default:
           alert('Rol no reconocido');

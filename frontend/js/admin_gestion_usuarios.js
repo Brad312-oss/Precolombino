@@ -1,8 +1,25 @@
+const usuarioActualId = JSON.parse(localStorage.getItem('usuario'))?.usuario_id;
+
 document.addEventListener('DOMContentLoaded', () => {
   verificarAdmin();
   listarUsuarios();
   document.getElementById('logoutBtn').addEventListener('click', cerrarSesion);
 });
+
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = decodeURIComponent(
+      atob(base64Url)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(base64);
+  } catch (e) {
+    return null;
+  }
+}
 
 function getTokenHeaders() {
   const token = localStorage.getItem('token');
@@ -36,16 +53,43 @@ async function listarUsuarios() {
     data.forEach(usuario => {
       const tr = document.createElement('tr');
 
-      tr.innerHTML = `
-        <td>${usuario.usuario_id}</td>
-        <td>${usuario.cedula || 'N/A'}</td>
-        <td>${usuario.nombre} ${usuario.apellido}</td>
-        <td>${usuario.correo}</td>
-        <td>${usuario.nombre_rol}</td>
-        <td>${usuario.estado === 'activo' ? 'Activo' : 'Baneado'}</td>
-      `;
-
+      // ID
+      const tdId = document.createElement('td');
+      tdId.textContent = usuario.usuario_id;
+      tr.appendChild(tdId);
+      
+      // Cédula
+      const tdCedula = document.createElement('td');
+      tdCedula.textContent = usuario.cedula || 'N/A';
+      tr.appendChild(tdCedula);
+      
+      // Nombre
+      const tdNombre = document.createElement('td');
+      tdNombre.textContent = `${usuario.nombre} ${usuario.apellido}`;
+      tr.appendChild(tdNombre);
+      
+      // Correo
+      const tdCorreo = document.createElement('td');
+      tdCorreo.textContent = usuario.correo;
+      tr.appendChild(tdCorreo);
+      
+      // Rol
+      const tdRol = document.createElement('td');
+      tdRol.textContent = usuario.nombre_rol;
+      tr.appendChild(tdRol);
+      
+      // Estado
+      const tdEstado = document.createElement('td');
+      tdEstado.textContent = usuario.estado === 'activo' ? 'Activo' : 'Baneado';
+      tr.appendChild(tdEstado);
+      
+      // Acciones
       const acciones = document.createElement('td');
+      
+      // Agrega todos los botones igual que antes...
+      // // (btnEditar, btnEliminar, btnBanear/Desbanear, btnCorreo, Hacer/Quitar Admin)
+
+      tr.appendChild(acciones);
 
       const btnEditar = document.createElement('button');
       btnEditar.textContent = 'Editar';
@@ -73,6 +117,32 @@ async function listarUsuarios() {
       btnCorreo.textContent = 'Correo';
       btnCorreo.onclick = () => enviarCorreo(usuario.correo);
       acciones.appendChild(btnCorreo);
+
+      const token = parseJwt(localStorage.getItem('token'));
+      
+      if (usuario.id_rol === 3) {
+        // Ya es admin
+        const token = parseJwt(localStorage.getItem('token'));
+        const btnQuitarAdmin = document.createElement('button');
+        btnQuitarAdmin.textContent = 'Quitar Admin';
+        
+        if (token.id !== usuario.usuario_id) {
+          btnQuitarAdmin.onclick = () => quitarRolAdmin(usuario.usuario_id);
+        } else {
+          btnQuitarAdmin.disabled = true;
+          btnQuitarAdmin.title = "No puedes quitarte tu propio rol";
+        }
+        
+        acciones.appendChild(btnQuitarAdmin);
+      
+      } else {
+        
+        // No es admin
+        const btnHacerAdmin = document.createElement('button');
+        btnHacerAdmin.textContent = 'Hacer Admin';
+        btnHacerAdmin.onclick = () => cambiarRolAdmin(usuario.usuario_id);
+        acciones.appendChild(btnHacerAdmin);
+      }
 
       tr.appendChild(acciones);
       tbody.appendChild(tr);
@@ -213,5 +283,72 @@ async function desbanearUsuario(usuario_id) {
     }
   } catch (error) {
     console.error('Error al desbanear:', error);
+  }
+}
+
+async function cambiarRolAdmin(id) {
+  if (!confirm('¿Deseas convertir este usuario en administrador?')) return;
+
+  try {
+    const res = await fetch(`http://localhost:3000/api/usuarios/cambiar-rol`, {
+      method: 'PUT',
+      headers: getTokenHeaders(),
+      body: JSON.stringify({
+        usuario_id: id,
+        nuevo_rol: 3
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+
+    alert('Rol actualizado a Administrador');
+    listarUsuarios();
+
+    if (id === usuarioActualId) {
+      const actualizado = JSON.parse(localStorage.getItem('usuario'));
+      actualizado.id_rol = 3;
+      localStorage.setItem('usuario', JSON.stringify(actualizado));
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('No se pudo cambiar el rol del usuario');
+  }
+}
+
+async function quitarRolAdmin(id) {
+  if (id === usuarioActualId) {
+    alert('No puedes quitarte tu propio rol de administrador.');
+    return;
+  }
+
+  if (!confirm('¿Deseas quitar el rol de administrador a este usuario?')) return;
+
+  try {
+    const res = await fetch(`http://localhost:3000/api/usuarios/cambiar-rol`, {
+      method: 'PUT',
+      headers: getTokenHeaders(),
+      body: JSON.stringify({
+        usuario_id: id,
+        nuevo_rol: 1 // Cliente
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+
+    alert('Rol de administrador eliminado. Ahora es cliente.');
+    listarUsuarios();
+
+    if (id === usuarioActualId) {
+      const actualizado = JSON.parse(localStorage.getItem('usuario'));
+      actualizado.id_rol = 1;
+      localStorage.setItem('usuario', JSON.stringify(actualizado));
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('No se pudo cambiar el rol del usuario');
   }
 }

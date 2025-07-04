@@ -7,9 +7,8 @@ export const crearVenta = async (req, res) => {
   }
 
   console.log('BODY RECIBIDO EN /api/ventas:', req.body);
-  const { fecha, total, productos } = req.body;
+  const { fecha, total, tipo_pago, productos } = req.body;
 
-  // ✅ Obtener el ID del usuario dependiendo del rol
   const usuario_id = req.usuario.id_rol === 3 && req.body.usuario_id
     ? req.body.usuario_id
     : req.usuario.id;
@@ -58,20 +57,50 @@ export const crearVenta = async (req, res) => {
     }
 
     const [ventaResult] = await connection.query(
-      'INSERT INTO ventas (usuario_id, fecha, total) VALUES (?, ?, ?)',
-      [usuario_id, fecha, total]
+      'INSERT INTO ventas (usuario_id, fecha, total, tipo_pago) VALUES (?, ?, ?, ?)',
+      [usuario_id, fecha, total, tipo_pago]
     );
     const ventaId = ventaResult.insertId;
 
     for (const producto of productos) {
+      const [rowsPrecio] = await connection.query(
+        'SELECT precio FROM productos WHERE producto_id = ?',
+        [producto.producto_id]
+      );
+      const precioUnitario = rowsPrecio[0].precio;
+      const subtotal = producto.cantidad * precioUnitario;
+
       await connection.query(
         'INSERT INTO detalle_de_venta (venta_id, producto_id, cantidad, subtotal) VALUES (?, ?, ?, ?)',
-        [ventaId, producto.producto_id, producto.cantidad, producto.subtotal || 0]
+        [ventaId, producto.producto_id, producto.cantidad, subtotal]
       );
     }
 
     await connection.commit();
-    res.status(201).json({ message: 'Venta registrada correctamente' });
+
+    const [detalles] = await pool.query(`
+      SELECT 
+      p.producto_id,
+      piezas.nombre_pieza AS nombre_pieza,
+      cultura.cultura AS cultura,
+      tamanio.tamanio AS tamanio,
+      p.precio,
+      dv.cantidad,
+      dv.subtotal
+      FROM detalle_de_venta dv
+      JOIN productos p ON p.producto_id = dv.producto_id
+      JOIN piezas ON piezas.piezas_id = p.piezas_id
+      JOIN cultura ON cultura.cultura_id = p.cultura_id
+      JOIN tamanio ON tamanio.tamanio_id = p.tamanio_id
+      WHERE dv.venta_id = ?
+    `, [ventaId]);
+
+    res.status(201).json({
+      message: 'Venta registrada correctamente',
+      tipo_pago,
+      total,
+      productos: detalles
+    });
 
   } catch (error) {
     await connection.rollback();

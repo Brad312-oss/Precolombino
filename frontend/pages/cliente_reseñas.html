@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reseñas</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <h2>Reseñas de Productos</h2>
+
+  <div id="listaResenas"></div>
+
+  <h3>Escribir una Reseña</h3>
+  <form id="formResena">
+    <label for="producto">Producto:</label>
+    <select id="producto" required></select><br>
+
+    <label for="comentario">Comentario:</label><br>
+    <textarea id="comentario" rows="4" cols="50" required></textarea><br>
+
+    <button type="submit">Enviar Reseña</button>
+  </form>
+
+  <button onclick="window.location.href='./cliente_inicio.html'">Volver</button>
+
+  <script src="../js/cliente_reseñas.js"></script>
+</body>
+</html>
