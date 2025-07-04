@@ -1,4 +1,3 @@
-// backend/routes/productoRoutes.js
 import express from 'express';
 import {
   listarProductos,
@@ -17,7 +16,6 @@ const router = express.Router();
 
 router.get('/reporte/productos', verificarUsuario, autorizarRoles([3]), obtenerReporteProductos);
 
-// 📦 Rutas públicas
 router.get('/', listarProductos);
 router.get('/stock/:id', obtenerStockProducto);
 
@@ -28,7 +26,6 @@ router.delete(
   eliminarProducto
 );
 
-// 🛡️ Rutas protegidas (solo admin: rol 3)
 router.post(
   '/',
   verificarUsuario,

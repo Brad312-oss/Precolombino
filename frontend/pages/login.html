@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-  <h2>Login</h2>
+   <header>
+    <img src="../assets/img/logo.png" alt="Logo Precolombinos">
+    <h2>Login</h2>
+  </header>
   <form id="loginForm">
     <input type="email" id="correo" placeholder="Correo" required />
     <input type="password" id="contraseña" placeholder="Contraseña" required />
     <button type="submit">Iniciar sesión</button>
   </form>
 
-  <!-- 🔹 Enlace de recuperación de contraseña -->
   <p><a href="#" id="olvideContrasena">¿Olvidaste tu contraseña?</a></p>
 
   <script src="../js/login.js"></script>

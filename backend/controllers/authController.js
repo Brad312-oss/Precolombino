@@ -21,7 +21,7 @@ export const register = async (req, res) => {
   }
 
   const hash = await bcrypt.hash(contraseña, 10);
-  const id_rol = 1; // cliente
+  const id_rol = 1;
   await crearUsuario(nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, hash, id_rol);
   await enviarCorreoConfirmacion(correo, nombre);
 
@@ -52,7 +52,6 @@ export const login = async (req, res) => {
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );
 
-  // ✅ Actualizar last_login
   await pool.query(
     'UPDATE usuarios SET last_login = NOW() WHERE usuario_id = ?',
     [usuario.usuario_id]
@@ -71,7 +70,6 @@ export const login = async (req, res) => {
   });
 };
 
-// Envío de enlace de recuperación con token
 export const solicitarRecuperacion = async (req, res) => {
   const { correo } = req.body;
 
@@ -101,7 +99,6 @@ export const solicitarRecuperacion = async (req, res) => {
   }
 };
 
-// ✅ Cambio de contraseña usando el token
 export const cambiarContrasena = async (req, res) => {
   const { correo, token, nuevaContrasena } = req.body;
 

@@ -1,11 +1,9 @@
-// backend/controllers/piezaController.js
 import {
   obtenerPiezas,
   insertarPieza,
   borrarPiezaPorId
 } from '../models/piezaModel.js';
 
-// Listar todas las piezas
 export const listarPiezas = async (req, res) => {
   try {
     const rows = await obtenerPiezas();
@@ -16,7 +14,6 @@ export const listarPiezas = async (req, res) => {
   }
 };
 
-// Crear una nueva pieza
 export const crearPieza = async (req, res) => {
   const { nombre_pieza } = req.body;
 
@@ -33,7 +30,6 @@ export const crearPieza = async (req, res) => {
   }
 };
 
-// Eliminar una pieza por su ID
 export const eliminarPieza = async (req, res) => {
   const { id } = req.params;
 

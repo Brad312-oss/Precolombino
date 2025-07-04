@@ -1,4 +1,3 @@
-// backend/models/productoModel.js
 import { pool } from '../config/db.js';
 
 export const obtenerProductos = async () => {
@@ -30,8 +29,6 @@ export const agregarProducto = async ({ piezas_id, cultura_id, tamanio_id, preci
   );
   return result;
 };
-
-// backend/models/productoModel.js
 
 export const actualizarProducto = async (id, datos) => {
   if (!datos || Object.keys(datos).length === 0) {

@@ -1,4 +1,3 @@
-// backend/routes/ventaRoutes.js
 import express from 'express';
 import {
   crearVenta,

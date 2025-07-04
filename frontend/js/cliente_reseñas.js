@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
   if (!token) return window.location.href = '../pages/login.html';
 
-  // Cargar productos para el selector
   const cargarProductos = async () => {
     const res = await fetch('/api/productos');
     const productos = await res.json();
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   };
 
-  // Cargar reseñas
   const cargarResenas = async () => {
     const res = await fetch('/api/resenas');
     const resenas = await res.json();
@@ -29,7 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   };
 
-  // Enviar reseña
   document.getElementById('formResena').addEventListener('submit', async (e) => {
     e.preventDefault();
     const producto_id = document.getElementById('producto').value;

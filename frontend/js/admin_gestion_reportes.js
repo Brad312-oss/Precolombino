@@ -165,7 +165,6 @@ async function generarReporteUsuarios() {
     document.getElementById('totalNuevos').textContent = resumen.total_nuevos;
     document.getElementById('totalBaneados').textContent = resumen.total_baneados;
 
-    // Detalle por rol
     const contenedorRoles = document.getElementById('resumenPorRol');
     contenedorRoles.innerHTML = '';
     resumen.porRol.forEach(({ rol, cantidad }) => {
@@ -174,7 +173,6 @@ async function generarReporteUsuarios() {
       contenedorRoles.appendChild(p);
     });
 
-    // Tabla de detalle
     const tabla = document.getElementById('tablaUsuariosReporte');
     tabla.innerHTML = '';
     detalle.forEach(u => {

@@ -1,5 +1,3 @@
-// backend/controllers/productoController.js
-
 import {
   obtenerProductos,
   agregarProducto as modeloAgregar,
@@ -7,9 +5,8 @@ import {
   eliminarProducto as modeloEliminar
 } from '../models/productoModel.js';
 
-import { pool } from '../config/db.js'; // Para obtener el stock
+import { pool } from '../config/db.js';
 
-// 📦 Obtener todos los productos
 export const listarProductos = async (req, res) => {
   try {
     const productos = await obtenerProductos();
@@ -20,7 +17,6 @@ export const listarProductos = async (req, res) => {
   }
 };
 
-// 📦 Obtener solo el stock de un producto
 export const obtenerStockProducto = async (req, res) => {
   const { id } = req.params;
 
@@ -41,13 +37,12 @@ export const obtenerStockProducto = async (req, res) => {
   }
 };
 
-// ➕ Agregar nuevo producto con imagen
 export const agregarProducto = async (req, res) => {
   const { piezas_id, cultura_id, tamanio_id, descripcion, precio, stock } = req.body;
   const imagen = req.file ? `/uploads/productos/${req.file.filename}` : null;
   const usuarioId = req.usuario?.usuario_id;
 
-  console.log('👤 ID del usuario autenticado (agregar):', usuarioId); // ✅ DENTRO DE LA FUNCIÓN
+  console.log('👤 ID del usuario autenticado (agregar):', usuarioId);
 
   if (!piezas_id || !cultura_id || !tamanio_id || !descripcion || !precio || !stock || !imagen) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios, incluida la imagen' });
@@ -72,9 +67,6 @@ export const agregarProducto = async (req, res) => {
   }
 };
 
-// ✏️ Editar producto existente
-// backend/controllers/productoController.js
-// ✏️ Editar producto existente
 export const editarProducto = async (req, res) => {
   const { id } = req.params;
   const {
@@ -118,7 +110,6 @@ export const editarProducto = async (req, res) => {
   }
 };
 
-// ❌ Eliminar producto
 export const eliminarProducto = async (req, res) => {
   const { id } = req.params;
 

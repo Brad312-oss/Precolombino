@@ -1,4 +1,3 @@
-// frontend/js/admin_gestion_ventas.js
 document.addEventListener('DOMContentLoaded', async () => {
   verificarAdmin();
   listarVentas();
@@ -31,10 +30,10 @@ async function verificarAdmin() {
     if (data.usuario.id_rol !== 3) {
       alert('Acceso denegado');
       window.location.href = '/pages/login.html';
-      return false; // 👈 ahora retorna false
+      return false;
     }
 
-    return true; // 👈 si es admin, retorna true
+    return true;
   } catch (err) {
     console.error(err);
     alert('Sesión inválida');
@@ -43,7 +42,6 @@ async function verificarAdmin() {
   }
 }
 
-// 1. Listar ventas con detalles
 async function listarVentas() {
   try {
     const res = await fetch('http://localhost:3000/api/ventas/detalles', {
@@ -78,7 +76,6 @@ async function listarVentas() {
   }
 }
 
-// 2. Ver detalle de venta
 async function verDetalleVenta(venta_id) {
   try {
     const res = await fetch(`http://localhost:3000/api/ventas/detalles?id=${venta_id}`, {
@@ -101,7 +98,6 @@ async function verDetalleVenta(venta_id) {
   }
 }
 
-// 3. Actualizar estado de venta
 function mostrarFormularioEstado(venta_id, estadoActual) {
   const nuevoEstado = prompt(`Estado actual: ${estadoActual}\n\nIngrese el nuevo estado (en proceso / entregada / cancelada):`);
   if (nuevoEstado && ['en proceso', 'entregada', 'cancelada'].includes(nuevoEstado)) {
@@ -129,7 +125,6 @@ async function actualizarEstadoVenta(venta_id, nuevoEstado) {
   }
 }
 
-// 4. Registrar venta
 async function registrarVenta(e) {
   e.preventDefault();
 
@@ -223,7 +218,6 @@ function agregarFilaProducto() {
 
   tbody.appendChild(tr);
 
-  // cargar productos en el select de esa fila nueva
   cargarOpcionesProducto(tr.querySelector('.productoSelect'));
 
   tr.querySelector('.eliminarFila').addEventListener('click', () => {
@@ -249,7 +243,6 @@ async function cargarOpcionesProducto(selectElement) {
       selectElement.appendChild(option);
     });
 
-    // Agregar eventos después de cargar opciones
     selectElement.addEventListener('change', actualizarSubtotal);
     selectElement.closest('tr').querySelector('.cantidad').addEventListener('input', actualizarSubtotal);
 
@@ -277,6 +270,3 @@ function actualizarTotalVenta() {
   });
   document.getElementById('totalVenta').textContent = total.toFixed(2);
 }
-
-
-

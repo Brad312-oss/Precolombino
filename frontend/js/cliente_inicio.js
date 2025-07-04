@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return window.location.href = '../pages/login.html';
   }
 
-  // Botones funcionales
   document.getElementById('verCatalogoBtn').addEventListener('click', () => {
     window.location.href = './cliente_catalogo.html';
   });

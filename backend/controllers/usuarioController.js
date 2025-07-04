@@ -1,6 +1,5 @@
 import { pool } from '../config/db.js';
 
-// Obtener todos los usuarios (solo para admin)
 export const listarUsuarios = async (req, res) => {
   try {
     const [usuarios] = await pool.query(`
@@ -16,16 +15,14 @@ export const listarUsuarios = async (req, res) => {
   }
 };
 
-// Cambiar el rol de un usuario
 export const cambiarRolUsuario = async (req, res) => {
   const { usuario_id, nuevo_rol } = req.body;
-  const admin_id = req.usuario?.id; // Obtenido desde el JWT por el authMiddleware
+  const admin_id = req.usuario?.id;
 
   if (!usuario_id || !nuevo_rol) {
     return res.status(400).json({ message: 'Datos incompletos' });
   }
 
-  // 🚫 Evitar que un admin se quite su propio rol
   if (parseInt(usuario_id) === parseInt(admin_id) && parseInt(nuevo_rol) !== 3) {
     return res.status(403).json({ message: 'No puedes quitarte tu propio rol de administrador' });
   }
@@ -151,7 +148,7 @@ export const obtenerClientes = async (req, res) => {
       SELECT usuario_id, nombre, apellido, correo 
       FROM usuarios 
       WHERE id_rol = ? AND estado = "activo"
-    `, [1]); // Rol cliente
+    `, [1]);
     res.json(clientes);
   } catch (error) {
     console.error('Error al obtener clientes:', error);
@@ -162,14 +159,12 @@ export const obtenerClientes = async (req, res) => {
 export const obtenerEstadisticasUsuarios = async (req, res) => {
   const { fechaInicio, fechaFin } = req.query;
   try {
-    // 1) Conteos generales
     const [[{ total_nuevos }]] = await pool.query(
       `SELECT COUNT(*) AS total_nuevos
          FROM usuarios
         WHERE fecha_registro BETWEEN ? AND ?`,
       [fechaInicio, fechaFin]
     );
-    // 2) Conteo por rol
     const [porRol] = await pool.query(
       `SELECT r.nombre AS rol, COUNT(*) AS cantidad
          FROM usuarios u
@@ -178,7 +173,6 @@ export const obtenerEstadisticasUsuarios = async (req, res) => {
         GROUP BY u.id_rol`,
       [fechaInicio, fechaFin]
     );
-    // 3) Detalle de nuevos usuarios con su último login
     const [detalle] = await pool.query(
       `SELECT u.usuario_id, u.nombre, u.apellido, u.correo,
               r.nombre AS rol, u.estado, u.fecha_registro, u.last_login
@@ -188,7 +182,6 @@ export const obtenerEstadisticasUsuarios = async (req, res) => {
         ORDER BY u.fecha_registro DESC`,
       [fechaInicio, fechaFin]
     );
-    // Conteo de usuarios baneados
     const [[{ total_baneados }]] = await pool.query(
       `SELECT COUNT(*) AS total_baneados
       FROM usuarios
@@ -206,7 +199,6 @@ export const obtenerEstadisticasUsuarios = async (req, res) => {
   }
 };
 
-// ✅ Actualizar perfil del cliente
 export const actualizarPerfilCliente = async (req, res) => {
   const { nombre, apellido, correo, telefono, direccion } = req.body;
   const usuario_id = req.usuario.id;

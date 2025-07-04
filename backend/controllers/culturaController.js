@@ -4,7 +4,6 @@ import {
   borrarCulturaPorId
 } from '../models/culturaModel.js';
 
-// Listar todas las culturas
 export const listarCulturas = async (req, res) => {
   try {
     const culturas = await obtenerCulturas();
@@ -15,7 +14,6 @@ export const listarCulturas = async (req, res) => {
   }
 };
 
-// Crear una nueva cultura
 export const crearCultura = async (req, res) => {
   const { cultura } = req.body;
 
@@ -32,7 +30,6 @@ export const crearCultura = async (req, res) => {
   }
 };
 
-// Eliminar una cultura
 export const eliminarCultura = async (req, res) => {
   const { id } = req.params;
 

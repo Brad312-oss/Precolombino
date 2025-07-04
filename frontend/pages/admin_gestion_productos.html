@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Admin</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin_gestion_productos.css">
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const usuarioRaw = localStorage.getItem('usuario');
@@ -18,7 +18,6 @@
       return;
     }
 
-    // Forzar recarga si se vuelve atrás con el navegador
     window.addEventListener('pageshow', (event) => {
       if (event.persisted || window.performance?.navigation.type === 2) {
         window.location.reload();
@@ -29,21 +28,21 @@
 </head>
 <body>
   <header>
-    <h1>Panel de Administración - Productos</h1>
-    <nav>
-      <a href="admin_dashboard.html">Dashboard</a>
-      <a href="admin_gestion_usuarios.html">Usuarios</a>
-      <a href="admin_gestion_ventas.html">ventas</a>
-      <a href="admin_gestion_reportes.html">Reportes</a>
-      <button id="logoutBtn">Cerrar sesión</button>
-    </nav>
-  </header>
+  <img src="../assets/img/logo.png" alt="Logo Precolombinos">
+  <h1>Panel de Administración - Productos</h1>
+  <nav>
+    <a href="admin_dashboard.html">Dashboard</a>
+    <a href="admin_gestion_usuarios.html">Usuarios</a>
+    <a href="admin_gestion_ventas.html">Ventas</a>
+    <a href="admin_gestion_reportes.html">Reportes</a>
+    <button id="logoutBtn">Cerrar sesión</button>
+  </nav>
+</header>
 <form id="formPieza">
   <input type="text" id="nuevaPieza" placeholder="Nombre de la pieza" required />
   <button type="submit">Agregar Pieza</button>
 </form>
 
-<!-- 🆕 Tabla de piezas -->
 <table border="1">
   <thead>
     <tr>
@@ -61,7 +60,6 @@
   <button type="submit">Agregar Tamaño</button>
 </form>
 
-<!-- 🆕 Tabla de tamaños -->
 <table border="1">
   <thead>
     <tr>
@@ -80,7 +78,6 @@
   <button type="submit">Agregar Cultura</button>
 </form>
 
-<!-- 🆕 Tabla de culturas -->
 <table border="1">
   <thead>
     <tr>
@@ -94,26 +91,22 @@
 
   <h3>Gestión de Productos</h3>
 
-  <!-- Formulario para agregar o editar producto -->
   <form id="formProducto">
   <input type="hidden" id="productoId" />
     
-    <!-- Cambios marcados con comentarios -->
-<select id="piezas_id" name="piezas_id" required></select> <!-- ✅ agregado name -->
-<select id="cultura_id" name="cultura_id" required></select> <!-- ✅ agregado name -->
-<select id="tamanio_id" name="tamanio_id" required></select> <!-- ✅ agregado name -->
+<select id="piezas_id" name="piezas_id" required></select> 
+<select id="cultura_id" name="cultura_id" required></select> 
+<select id="tamanio_id" name="tamanio_id" required></select> 
 
-<input type="file" id="imagen" name="imagen" required /> <!-- ⚠️ cambia el id a "imagen" -->
+<input type="file" id="imagen" name="imagen" required /> 
 <label for="descripcion">Descripción:</label>
 <textarea id="descripcion" name="descripcion" required></textarea>
-<input type="number" id="precio" name="precio" required /> <!-- ✅ agregado name -->
-<input type="number" id="stock" name="stock" required /> <!-- ✅ agregado name -->
-
+<input type="number" id="precio" name="precio" required />
+<input type="number" id="stock" name="stock" required />
 
     <button type="submit">Guardar Producto</button>
   </form>
 
-  <!-- Tabla de productos -->
   <table border="1">
     <thead>
       <tr>

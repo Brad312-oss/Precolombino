@@ -1,4 +1,3 @@
-// backend/routes/piezaRoutes.js
 import express from 'express';
 import {
   listarPiezas,

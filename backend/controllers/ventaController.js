@@ -1,6 +1,5 @@
 import pool from '../config/db.js';
 
-// Registrar una nueva venta
 export const crearVenta = async (req, res) => {
   if (!req.usuario || !req.usuario.id || isNaN(req.usuario.id)) {
     return res.status(401).json({ message: 'Token inválido o usuario no autenticado' });
@@ -111,13 +110,11 @@ export const crearVenta = async (req, res) => {
   }
 };
 
-// Listar todas las ventas con detalles
 export async function listarVentasConDetalles(req, res) {
   try {
     const { id } = req.query;
 
     if (id) {
-      // Obtener solo el detalle de UNA venta
       const [detalles] = await pool.query(`
         SELECT dv.*, pi.nombre_pieza AS nombre_producto
         FROM detalle_de_venta dv
@@ -128,7 +125,6 @@ export async function listarVentasConDetalles(req, res) {
       return res.json(detalles);
     }
 
-    // Si no hay ?id, listar TODAS las ventas
     const [ventas] = await pool.query(`
       SELECT v.venta_id AS venta_id, u.nombre AS nombre_cliente, v.fecha, v.estado, v.total
       FROM ventas v
@@ -142,10 +138,8 @@ export async function listarVentasConDetalles(req, res) {
   }
 }
 
-// Alias para crearVenta
 export const registrarVenta = crearVenta;
 
-// Actualizar estado de una venta
 export const actualizarEstadoVenta = async (req, res) => {
   const { venta_id } = req.params;
   const { estado } = req.body;
@@ -171,7 +165,6 @@ export const actualizarEstadoVenta = async (req, res) => {
   }
 };
 
-// Obtener todas las ventas (sin detalles)
 export const obtenerVentas = async (req, res) => {
   try {
     const [ventas] = await pool.query(`
@@ -188,7 +181,6 @@ export const obtenerVentas = async (req, res) => {
   }
 };
 
-// ✅ Reporte completo de ventas (productos + usuario + detalles)
 export const generarReporteFiltrado = async (req, res) => {
   try {
     const {

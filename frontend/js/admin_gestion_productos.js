@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ✅ Agrega esto al inicio dentro del DOMContentLoaded
   function getTokenHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -153,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Formulario pieza
   document.getElementById('formPieza').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nombre_pieza = document.getElementById('nuevaPieza').value.trim();
@@ -173,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
     listarPiezas();
   });
 
-  // Eliminar pieza
   const listarPiezas = async () => {
     const tabla = document.getElementById('tablaPiezas');
     const res = await fetch('/api/piezas', { headers: getTokenHeaders() });
@@ -205,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Tamaños
   document.getElementById('formTamanio').addEventListener('submit', async (e) => {
     e.preventDefault();
     const tamanio = document.getElementById('nuevoTamanio').value.trim();
@@ -256,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Culturas
   document.getElementById('formCultura').addEventListener('submit', async (e) => {
     e.preventDefault();
     const cultura = document.getElementById('nuevaCultura').value.trim();
@@ -307,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Inicialización
   cargarSelect('/api/piezas', piezasSelect);
   cargarSelect('/api/culturas', culturaSelect);
   cargarSelect('/api/tamanios', tamanioSelect);

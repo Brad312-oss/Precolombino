@@ -1,4 +1,3 @@
-// backend/routes/tamanioRoutes.js
 import express from 'express';
 import {
   listarTamanios,

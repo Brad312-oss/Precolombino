@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       return window.location.href = '../pages/login.html';
     }
 
-    // Cargar datos del usuario en los campos del formulario
     document.getElementById('nombre').value = data.usuario.nombre || '';
     document.getElementById('apellido').value = data.usuario.apellido || '';
     document.getElementById('correo').value = data.usuario.correo || '';

@@ -1,13 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { pool } from '../config/db.js';
 
-// ✅ Obtener el ID del rol por su nombre
 export async function obtenerIdRolPorNombre(nombreRol) {
   const [rows] = await pool.query('SELECT id FROM roles WHERE nombre = ?', [nombreRol]);
   return rows[0]?.id;
 }
-
-// ✅ Verifica el token JWT y añade los datos del usuario a req.usuario
 
 export const verificarUsuario = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -19,7 +16,6 @@ export const verificarUsuario = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ Verificar si el usuario existe y está activo
     const [result] = await pool.query(
       'SELECT estado FROM usuarios WHERE usuario_id = ?',
       [decoded.usuario_id]
@@ -29,7 +25,6 @@ export const verificarUsuario = async (req, res, next) => {
       return res.status(401).json({ message: 'Usuario inactivo o no encontrado' });
     }
 
-    // ✅ Guardar datos del usuario en el request
     req.usuario = {
       id: decoded.usuario_id,
       correo: decoded.correo,
@@ -43,8 +38,6 @@ export const verificarUsuario = async (req, res, next) => {
   }
 };
 
-// ✅ Autoriza por roles (por ID de rol)
-// En authMiddleware.js
 export function autorizarRoles(rolesPermitidos) {
   return (req, res, next) => {
     if (!Array.isArray(rolesPermitidos)) {

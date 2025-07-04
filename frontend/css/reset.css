@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+}
+
+.container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.container::before {
+  content: '';
+  display: block;
+  background: url('../assets/img/logo.png') no-repeat center;
+  background-size: 120px;
+  height: 120px;
+  margin: 0 auto 20px auto;
+}
+
+form input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+#mensaje {
+  margin-top: 15px;
+  color: #d9534f;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container::before {
+    background-size: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  form input,
+  form button {
+    padding: 10px;
+  }
+}

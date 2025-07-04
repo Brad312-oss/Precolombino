@@ -1,7 +1,27 @@
-const usuarioActualId = JSON.parse(localStorage.getItem('usuario'))?.usuario_id;
+window.addEventListener('pageshow', function (event) {
+  if (event.persisted || (window.performance && performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+    location.reload();
+  }
+});
+
+let usuarioActualId;
 
 document.addEventListener('DOMContentLoaded', () => {
-  verificarAdmin();
+  const usuarioRaw = localStorage.getItem('usuario');
+
+  if (!usuarioRaw) {
+    location.href = '/index.html';
+    return;
+  }
+
+  const usuario = JSON.parse(usuarioRaw);
+  if (usuario.id_rol !== 3) {
+    location.href = '/index.html';
+    return;
+  }
+
+  usuarioActualId = usuario.usuario_id;
+
   listarUsuarios();
   document.getElementById('logoutBtn').addEventListener('click', cerrarSesion);
 });
@@ -29,14 +49,6 @@ function getTokenHeaders() {
   };
 }
 
-function verificarAdmin() {
-  const usuarioRaw = localStorage.getItem('usuario');
-  if (!usuarioRaw) return location.href = '/index.html';
-
-  const usuario = JSON.parse(usuarioRaw);
-  if (usuario.id_rol !== 3) return location.href = '/index.html';
-}
-
 async function listarUsuarios() {
   try {
     const res = await fetch('http://localhost:3000/api/usuarios/listar', {
@@ -53,41 +65,31 @@ async function listarUsuarios() {
     data.forEach(usuario => {
       const tr = document.createElement('tr');
 
-      // ID
       const tdId = document.createElement('td');
       tdId.textContent = usuario.usuario_id;
       tr.appendChild(tdId);
-      
-      // Cédula
+
       const tdCedula = document.createElement('td');
       tdCedula.textContent = usuario.cedula || 'N/A';
       tr.appendChild(tdCedula);
-      
-      // Nombre
+
       const tdNombre = document.createElement('td');
       tdNombre.textContent = `${usuario.nombre} ${usuario.apellido}`;
       tr.appendChild(tdNombre);
-      
-      // Correo
+
       const tdCorreo = document.createElement('td');
       tdCorreo.textContent = usuario.correo;
       tr.appendChild(tdCorreo);
-      
-      // Rol
+
       const tdRol = document.createElement('td');
       tdRol.textContent = usuario.nombre_rol;
       tr.appendChild(tdRol);
-      
-      // Estado
+
       const tdEstado = document.createElement('td');
       tdEstado.textContent = usuario.estado === 'activo' ? 'Activo' : 'Baneado';
       tr.appendChild(tdEstado);
-      
-      // Acciones
+
       const acciones = document.createElement('td');
-      
-      // Agrega todos los botones igual que antes...
-      // // (btnEditar, btnEliminar, btnBanear/Desbanear, btnCorreo, Hacer/Quitar Admin)
 
       tr.appendChild(acciones);
 
@@ -121,8 +123,6 @@ async function listarUsuarios() {
       const token = parseJwt(localStorage.getItem('token'));
       
       if (usuario.id_rol === 3) {
-        // Ya es admin
-        const token = parseJwt(localStorage.getItem('token'));
         const btnQuitarAdmin = document.createElement('button');
         btnQuitarAdmin.textContent = 'Quitar Admin';
         
@@ -136,8 +136,7 @@ async function listarUsuarios() {
         acciones.appendChild(btnQuitarAdmin);
       
       } else {
-        
-        // No es admin
+
         const btnHacerAdmin = document.createElement('button');
         btnHacerAdmin.textContent = 'Hacer Admin';
         btnHacerAdmin.onclick = () => cambiarRolAdmin(usuario.usuario_id);
@@ -277,7 +276,7 @@ async function desbanearUsuario(usuario_id) {
     const data = await res.json();
     if (res.ok) {
       alert('Usuario desbaneado');
-      listarUsuarios(); // recarga lista actualizada
+      listarUsuarios();
     } else {
       alert(data.message || 'Error al desbanear');
     }
@@ -331,7 +330,7 @@ async function quitarRolAdmin(id) {
       headers: getTokenHeaders(),
       body: JSON.stringify({
         usuario_id: id,
-        nuevo_rol: 1 // Cliente
+        nuevo_rol: 1
       })
     });
 

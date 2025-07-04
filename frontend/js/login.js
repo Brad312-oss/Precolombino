@@ -14,20 +14,18 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const data = await res.json();
 
     if (res.ok) {
-      // ✅ Guardar token y datos del usuario en localStorage
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
-      // ✅ Redirigir según el rol
       const rol = data.usuario.id_rol;
       switch (rol) {
-        case 3: // admin
+        case 3:
         window.location.href = '/pages/admin_dashboard.html';
         break;
-        case 2: // operario
+        case 2:
         window.location.href = '/pages/operario.html';
         break;
-        case 1: // cliente
+        case 1:
         window.location.href = '/pages/cliente_inicio.html';
         break;
         default:
@@ -45,7 +43,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   }
 });
 
-// ✅ Manejo de enlace "¿Olvidaste tu contraseña?"
 document.addEventListener('DOMContentLoaded', () => {
   const enlace = document.getElementById('olvideContrasena');
   if (enlace) {

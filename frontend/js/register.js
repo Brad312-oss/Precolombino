@@ -1,5 +1,3 @@
-// register.js
-
 const getValue = (id) => {
     const el = document.getElementById(id);
     if (!el) throw new Error(`Elemento con id="${id}" no encontrado`);

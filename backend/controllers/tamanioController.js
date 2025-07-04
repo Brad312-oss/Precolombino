@@ -4,7 +4,6 @@ import {
   borrarTamanioPorId
 } from '../models/tamanioModel.js';
 
-// Listar todos los tamaños
 export const listarTamanios = async (req, res) => {
   try {
     const tamanios = await obtenerTamanios();
@@ -15,7 +14,6 @@ export const listarTamanios = async (req, res) => {
   }
 };
 
-// Crear nuevo tamaño
 export const crearTamanio = async (req, res) => {
   const { tamanio } = req.body;
 
@@ -32,7 +30,6 @@ export const crearTamanio = async (req, res) => {
   }
 };
 
-// Eliminar tamaño
 export const eliminarTamanio = async (req, res) => {
   const { id } = req.params;
 

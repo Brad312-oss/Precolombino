@@ -1,7 +1,7 @@
 const token = localStorage.getItem('token');
-if (!token) window.location.href = '/frontend/pages/login.html';
+if (!token) window.location.href = '../pages/login.html'; 
 
-const carrito = []; // [{ producto_id, cantidad, subtotal }]
+const carrito = [];
 let catalogoProductos = [];
 
 document.addEventListener('DOMContentLoaded', cargarCatalogo);
@@ -94,9 +94,8 @@ window.agregarAlCarrito = function(producto_id) {
   const existente = carrito.find(p => p.producto_id === producto_id);
   const cantidadDeseada = existente ? existente.cantidad + cantidad : cantidad;
 
-  // ✅ Validar stock antes de agregar
   if (cantidadDeseada > producto.stock) {
-    return alert(`❌ Stock insuficiente para "${producto.nombre_pieza}". Disponible: ${producto.stock}, solicitando: ${cantidadDeseada}`);
+    return alert(`Stock insuficiente para "${producto.nombre_pieza}". Disponible: ${producto.stock}, solicitando: ${cantidadDeseada}`);
   }
 
   const subtotal = cantidad * producto.precio;
@@ -117,7 +116,7 @@ window.agregarAlCarrito = function(producto_id) {
     });
   }
 
-  alert('✅ Producto agregado al carrito.');
+  alert('Producto agregado al carrito.');
   actualizarTotalCarrito();
 };
 
@@ -153,7 +152,7 @@ async function confirmarCompra() {
         usuario_id,
         fecha,
         total,
-        tipo_pago: tipoPago, // ✅ aquí se envía
+        tipo_pago: tipoPago,
         productos: carrito
       })
     });
@@ -163,7 +162,7 @@ async function confirmarCompra() {
     if (res.ok) {
   alert('Compra realizada con éxito. Gracias por tu pago con ' + tipoPago);
 
-  const productosComprados = [...carrito]; // <- copia antes de vaciar
+  const productosComprados = [...carrito];
   carrito.length = 0;
   cargarCatalogo();
   
@@ -171,7 +170,7 @@ async function confirmarCompra() {
     fecha,
     total,
     tipo_pago: tipoPago,
-    productos: productosComprados // <- aquí va la copia
+    productos: productosComprados
   });
 }
 else {
@@ -198,7 +197,7 @@ function mostrarRecibo(detalleCompra) {
     </tr>`;
 
   detalleCompra.productos.forEach(producto => {
-  console.log(producto.cultura, producto.tamanio); // Estos ya deben venir
+  console.log(producto.cultura, producto.tamanio);
     const precio = parseFloat(producto.precio) || 0;
     const cantidad = parseInt(producto.cantidad) || 0;
     const subtotalCalculado = producto.subtotal ?? (precio * cantidad);

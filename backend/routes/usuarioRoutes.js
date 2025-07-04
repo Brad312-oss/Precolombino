@@ -15,7 +15,6 @@ import { verificarUsuario, autorizarRoles,} from '../middleware/authMiddleware.j
 
 const router = express.Router();
 
-// Rutas protegidas para administradores
 router.get('/clientes', verificarUsuario, autorizarRoles([3]), obtenerClientes);
 router.get('/listar', verificarUsuario, autorizarRoles([3]), listarUsuarios);
 router.put('/cambiar-rol', verificarUsuario, autorizarRoles([3]), cambiarRolUsuario);
