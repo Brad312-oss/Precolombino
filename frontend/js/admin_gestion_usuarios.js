@@ -63,7 +63,7 @@ function getTokenHeaders() {
 async function listarUsuarios() {
   try {
     // Petición GET a la API para obtener los usuarios
-    const res = await fetch('http://localhost:3000/api/usuarios/listar', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/usuarios/listar', {
       method: 'GET',
       headers: getTokenHeaders()
     });
@@ -182,7 +182,7 @@ async function banearUsuario(id) {
   if (!confirm('¿Estás seguro de banear este usuario?')) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/usuarios/${id}/banear`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/usuarios/${id}/banear`, {
       method: 'PUT',
       headers: getTokenHeaders()
     });
@@ -204,7 +204,7 @@ function enviarCorreo(correo) {
   const mensaje = prompt('Mensaje para enviar:');
   if (!asunto || !mensaje) return;
 
-  fetch('http://localhost:3000/api/usuarios/enviar-correo', {
+  fetch('https://precolombinos-fronend.onrender.com/api/usuarios/enviar-correo', {
     method: 'POST',
     headers: getTokenHeaders(),
     body: JSON.stringify({ correo, asunto, mensaje })
@@ -237,7 +237,7 @@ async function editarUsuario(id) {
   if (!nombre || !apellido || !correo) return alert('Campos obligatorios incompletos');
 
   try {
-    const res = await fetch('http://localhost:3000/api/usuarios/editar', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/usuarios/editar', {
       method: 'PUT',
       headers: getTokenHeaders(),
       body: JSON.stringify({
@@ -270,7 +270,7 @@ async function eliminarUsuario(id) {
   if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/usuarios/eliminar/${id}`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/usuarios/eliminar/${id}`, {
       method: 'DELETE',
       headers: getTokenHeaders()
     });
@@ -289,7 +289,7 @@ async function eliminarUsuario(id) {
 async function desbanearUsuario(usuario_id) {
   const token = localStorage.getItem('token');
   try {
-    const res = await fetch(`http://localhost:3000/api/usuarios/desbanear`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/usuarios/desbanear`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -315,7 +315,7 @@ async function cambiarRolAdmin(id) {
   if (!confirm('¿Deseas convertir este usuario en administrador?')) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/usuarios/cambiar-rol`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/usuarios/cambiar-rol`, {
       method: 'PUT',
       headers: getTokenHeaders(),
       body: JSON.stringify({
@@ -353,7 +353,7 @@ async function quitarRolAdmin(id) {
   if (!confirm('¿Deseas quitar el rol de administrador a este usuario?')) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/usuarios/cambiar-rol`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/usuarios/cambiar-rol`, {
       method: 'PUT',
       headers: getTokenHeaders(),
       body: JSON.stringify({
