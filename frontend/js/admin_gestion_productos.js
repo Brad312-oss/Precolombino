@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Verificar que el token sea válido haciendo una petición a la API
-  fetch('http://localhost:3000/api/auth/verificar', {
+  fetch('https://precolombinos-fronend.onrender.com/api/auth/verificar', {
     headers: {
       Authorization: `Bearer ${token}`
     }
