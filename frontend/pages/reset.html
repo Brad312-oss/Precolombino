@@ -57,7 +57,7 @@
 
       try {
         // Enviamos la solicitud para cambiar la contraseña al servidor
-        const res = await fetch('http://localhost:3000/api/auth/cambiar-contrasena', {
+        const res = await fetch('https://precolombinos-fronend.onrender.com/api/auth/cambiar-contrasena', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ correo, token, nuevaContrasena })
