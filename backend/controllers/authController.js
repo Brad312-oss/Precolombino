@@ -112,7 +112,7 @@ export const solicitarRecuperacion = async (req, res) => {
     );
 
     // Generamos el enlace con el token
-    const resetLink = `http://localhost:3000/pages/reset.html?token=${token}&correo=${correo}`;
+    const resetLink = `https://precolombinos-fronend.onrender.com/pages/reset.html?token=${token}&correo=${correo}`;
 
     // Enviamos el correo de recuperación
     await enviarCorreoRecuperacion(correo, rows[0].nombre, resetLink);
