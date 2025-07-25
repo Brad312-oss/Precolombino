@@ -176,7 +176,7 @@ async function generarReporteUsuarios() {
   try {
     // Obtener token y hacer la petición a la API
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:3000/api/usuarios/reporte/usuarios?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/usuarios/reporte/usuarios?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -232,7 +232,7 @@ async function generarReporteProductos() {
   try {
     const token = localStorage.getItem('token');
     // Solicitud a la API para obtener reporte de productos
-    const res = await fetch('http://localhost:3000/api/productos/reporte/productos', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/productos/reporte/productos', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
