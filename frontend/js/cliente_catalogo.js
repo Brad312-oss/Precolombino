@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', cargarCatalogo);
 async function cargarCatalogo() {
   try {
     // Realiza la petición a la API, incluyendo el token si el usuario está autenticado
-    const res = await fetch('http://localhost:3000/api/productos', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/productos', {
       headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
 
@@ -35,7 +35,7 @@ async function cargarCatalogo() {
 
       // Crea el contenido HTML de cada tarjeta con información del producto
       card.innerHTML = `
-      <img src="http://localhost:3000${prod.imagen}" alt="${prod.descripcion}">
+      <img src="https://precolombinos-fronend.onrender.com${prod.imagen}" alt="${prod.descripcion}">
       <p><strong>Cultura:</strong> ${prod.cultura}</p>
       <p><strong>Pieza:</strong> ${prod.pieza}</p>
       <p><strong>Tamaño:</strong> ${prod.tamanio}</p>
@@ -72,7 +72,7 @@ async function cargarCatalogo() {
 window.verDetalle = async function(id) {
   try {
     // Solicita detalle del producto por id a la API, con autorización
-    const res = await fetch(`http://localhost:3000/api/productos/${id}`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/productos/${id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -82,7 +82,7 @@ window.verDetalle = async function(id) {
     const detalleHTML = `
       <div class="detalle-modal">
         <h3>${prod.nombre_pieza} - ${prod.cultura} - ${prod.tamanio}</h3>
-        <img src="http://localhost:3000${prod.imagen}" alt="${prod.descripcion}">
+        <img src="https://precolombinos-fronend.onrender.com${prod.imagen}" alt="${prod.descripcion}">
         <p><strong>Descripción:</strong> ${prod.descripcion}</p>
         <p><strong>Precio:</strong> $${prod.precio}</p>
         <p><strong>Stock:</strong> ${prod.stock}</p>
@@ -186,7 +186,7 @@ async function confirmarCompra() {
 
   try {
     // Enviar los datos de la venta a la API con método POST
-    const res = await fetch('http://localhost:3000/api/ventas', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/ventas', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
