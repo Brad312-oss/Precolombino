@@ -10,7 +10,11 @@ export const crearUsuario = async (
 ) => {
   // Inserta un nuevo usuario en la tabla 'usuarios' con todos sus datos
   const [result] = await pool.query(
+<<<<<<< HEAD
     'INSERT INTO usuarios(nombre, apellido, correo, cedula, telefono, direccion, contraseña, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+=======
+    'INSERT INTO usuarios(nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, contraseña, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12
     [nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, contraseña, id_rol]
   );
   // Devuelve el ID del nuevo usuario insertado

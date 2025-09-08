@@ -55,5 +55,10 @@ app.get('/', (req, res) => {
 
 // Arranca el servidor en el puerto 3000 y muestra un mensaje en consola cuando está listo
 app.listen(3000, () => {
+<<<<<<< HEAD
   console.log('Servidor corriendo en http://localhost:3000');
 });
+=======
+  console.log('Servidor corriendo en https://precolombinos-fronend.onrender.com');
+});
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12

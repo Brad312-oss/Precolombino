@@ -8,7 +8,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
   try {
     // Envía una petición POST al servidor con los datos de login
+<<<<<<< HEAD
     const res = await fetch('http://localhost:3000/api/auth/login', {
+=======
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/auth/login', {
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ correo, contraseña }) // Envía correo y contraseña en JSON

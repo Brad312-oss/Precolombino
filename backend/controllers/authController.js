@@ -19,7 +19,11 @@ export const register = async (req, res) => {
   const { nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, contraseña } = req.body;
 
   // Validamos que todos los campos estén presentes
+<<<<<<< HEAD
   if (!nombre || !apellido || !correo || !cedula || !telefono || !direccion || !contraseña) {
+=======
+  if (!nombre || !apellido || !correo || !cedula || !telefono || !direccion || !fecha_registro || !contraseña) {
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
@@ -34,7 +38,11 @@ export const register = async (req, res) => {
   const id_rol = 1;
 
   // Creamos el nuevo usuario en la base de datos
+<<<<<<< HEAD
   await crearUsuario(nombre, apellido, correo, cedula, telefono, direccion, hash, id_rol);
+=======
+  await crearUsuario(nombre, apellido, correo, cedula, telefono, direccion, fecha_registro, hash, id_rol);
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12
   // Enviamos un correo de confirmación
   await enviarCorreoConfirmacion(correo, nombre);
 
@@ -112,7 +120,11 @@ export const solicitarRecuperacion = async (req, res) => {
     );
 
     // Generamos el enlace con el token
+<<<<<<< HEAD
     const resetLink = `http://localhost:3000/pages/reset.html?token=${token}&correo=${correo}`;
+=======
+    const resetLink = `https://precolombinos-fronend.onrender.com/pages/reset.html?token=${token}&correo=${correo}`;
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12
 
     // Enviamos el correo de recuperación
     await enviarCorreoRecuperacion(correo, rows[0].nombre, resetLink);
