@@ -1,19 +1,4 @@
-// Importa Express para manejar rutas
-import express from 'express';
 
-// Importa las funciones del controlador de autenticación
-import {
-  login,
-  register,
-  solicitarRecuperacion,
-  cambiarContrasena
-} from '../controllers/authController.js';
-
-// Importa el middleware que verifica si el token JWT es válido
-import { verificarUsuario } from '../middleware/authMiddleware.js';
-
-// Crea una instancia de router de Express
-const router = express.Router();
 
 // ------------------------------------------------------------
 // Ruta para registrar un nuevo usuario
