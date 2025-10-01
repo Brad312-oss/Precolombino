@@ -1,15 +1,4 @@
-/* Estilos generales para la página */
-body {
-  margin: 0; /* Eliminar márgenes por defecto */
-  font-family: 'Segoe UI', sans-serif; /* Establecer la fuente para todo el cuerpo */
-  background-color: #000; /* Fondo negro */
-  color: #ffd700; /* Color de texto dorado */
-  padding: 20px; /* Espaciado interno en todo el cuerpo */
-  box-sizing: border-box; /* Incluir padding y border en el tamaño total del elemento */
-}
 
-/* Estilos para el encabezado y la navegación */
-header {
   display: flex; /* Usar Flexbox para distribuir los elementos en el encabezado */
   flex-wrap: wrap; /* Permitir que los elementos se envuelvan si es necesario */
   justify-content: space-between; /* Espaciar los elementos a ambos extremos */
