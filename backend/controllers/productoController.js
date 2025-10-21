@@ -1,15 +1,4 @@
-// Importamos funciones del modelo productoModel que permiten interactuar con la base de datos
-import {
-  obtenerProductos,
-  agregarProducto as modeloAgregar,
-  actualizarProducto as modeloActualizar,
-  eliminarProducto as modeloEliminar
-} from '../models/productoModel.js';
 
-// Importamos el pool de conexiones para ejecutar consultas directas
-import { pool } from '../config/db.js';
-
-// Controlador para listar todos los productos
 export const listarProductos = async (req, res) => {
   try {
     const productos = await obtenerProductos(); // Obtenemos productos desde el modelo
