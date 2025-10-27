@@ -1,18 +1,4 @@
 
-export const listarProductos = async (req, res) => {
-  try {
-    const productos = await obtenerProductos(); // Obtenemos productos desde el modelo
-    res.json(productos); // Enviamos los productos al cliente
-  } catch (error) {
-    console.error('Error al obtener productos:', error); // En caso de error, lo mostramos en consola
-    res.status(500).json({ message: 'Error al obtener productos' }); // Devolvemos error al cliente
-  }
-};
-
-// Controlador para obtener el stock de un producto por ID
-export const obtenerStockProducto = async (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del producto desde la URL
-
   try {
     const [rows] = await pool.query(
       'SELECT stock FROM productos WHERE producto_id = ?',
