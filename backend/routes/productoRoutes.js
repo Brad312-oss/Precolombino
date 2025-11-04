@@ -1,15 +1,4 @@
-// Importa express para manejar rutas
-import express from 'express';
 
-// Importa los controladores para productos
-import {
-  listarProductos,
-  obtenerStockProducto,
-  agregarProducto,
-  editarProducto,
-  eliminarProducto,
-  obtenerReporteProductos,
-  obtenerProductoDetalle
 } from '../controllers/productoController.js';
 
 // Importa middleware para autenticación y autorización
