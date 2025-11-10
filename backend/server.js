@@ -1,18 +1,3 @@
-import cors from 'cors'; // Middleware para habilitar CORS y permitir solicitudes desde otros dominios
-import express from 'express'; // Framework para crear el servidor y manejar rutas
-import path from 'path'; // Utilidad para manejar rutas de archivos y directorios
-import { fileURLToPath } from 'url'; // Función para convertir URL de módulos a rutas de archivo
-import dotenv from 'dotenv'; // Carga variables de entorno desde un archivo .env
-
-dotenv.config(); // Carga las variables de entorno del archivo .env a process.env
-
-const app = express(); // Crea la aplicación Express
-
-app.use(cors()); // Habilita CORS para permitir solicitudes desde otros orígenes
-app.use(express.json()); // Middleware para parsear JSON en el cuerpo de las solicitudes
-
-// Sirve archivos estáticos (como imágenes) desde la carpeta 'uploads' cuando se accede a /uploads en la URL
-app.use('/uploads', express.static('uploads'));
 
 // Estas dos líneas permiten obtener la ruta absoluta del directorio actual (equivalente a __dirname en CommonJS)
 const __filename = fileURLToPath(import.meta.url);
