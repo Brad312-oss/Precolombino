@@ -1,10 +1,4 @@
-// Evento que se dispara cuando la página se muestra (incluyendo cuando se navega con atrás/adelante)
-window.addEventListener('pageshow', function (event) {
-  // Si la página está en cache (persisted) o es una navegación con back/forward, recarga la página
-  if (event.persisted || (window.performance && performance.getEntriesByType("navigation")[0].type === "back_forward")) {
-    location.reload();
-  }
-});
+
 
 let usuarioActualId; // Variable para almacenar el ID del usuario actual
 
