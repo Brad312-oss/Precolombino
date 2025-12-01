@@ -3,16 +3,7 @@ import multer from 'multer';
 // Importa 'fs' para trabajar con el sistema de archivos (crear carpetas, etc.)
 import fs from 'fs';
 
-// Configuración del almacenamiento personalizado para multer
-const storage = multer.diskStorage({
-  // Define el directorio donde se guardarán los archivos subidos
-  destination: function (req, file, cb) {
-    const dir = 'uploads/productos'; // Carpeta destino
-
-    // Crea la carpeta si no existe (de forma recursiva para crear subdirectorios también)
-    fs.mkdirSync(dir, { recursive: true });
-
-    // Devuelve el directorio donde se debe guardar el archivo
+// Co guardar el archivo
     cb(null, dir);
   },
 
