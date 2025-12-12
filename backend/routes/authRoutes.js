@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Importa Express para manejar rutas
 import express from 'express';
 
@@ -14,6 +15,9 @@ import { verificarUsuario } from '../middleware/authMiddleware.js';
 
 // Crea una instancia de router de Express
 const router = express.Router();
+=======
+
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
 
 // ------------------------------------------------------------
 // Ruta para registrar un nuevo usuario
@@ -26,6 +30,7 @@ router.post('/register', register);
 // ------------------------------------------------------------
 router.post('/login', login);
 // Llama a 'login' para verificar credenciales y devolver un token JWT
+<<<<<<< HEAD
 
 // ------------------------------------------------------------
 // Ruta para solicitar recuperación de contraseña
@@ -45,6 +50,10 @@ router.get('/verificar', verificarUsuario, (req, res) => {
   // Si el token es válido, retorna los datos del usuario desde req.usuario
   res.json({ usuario: req.usuario });
 });
+=======
+
+// ------------------------------------------------------------
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
 
 // ------------------------------------------------------------
 // Exporta el router para que pueda ser usado en la app principal

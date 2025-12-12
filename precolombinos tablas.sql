@@ -118,3 +118,6 @@ CREATE TABLE resenas (
   FOREIGN KEY (producto_id) REFERENCES productos(producto_id),
   FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id)
 );
+
+ALTER TABLE usuarios 
+MODIFY fecha_registro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;

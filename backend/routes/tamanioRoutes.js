@@ -5,6 +5,7 @@ import {
   eliminarTamanio
 } from '../controllers/tamanioController.js';
 
+<<<<<<< HEAD
 import { verificarUsuario, autorizarRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -21,3 +22,5 @@ router.post('/', verificarUsuario, autorizarRoles([3]), crearTamanio);
 router.delete('/:id', verificarUsuario, autorizarRoles([3]), eliminarTamanio);
 
 export default router;
+=======
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7

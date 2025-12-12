@@ -38,7 +38,7 @@ export const verificarUsuario = async (req, res, next) => {
 
     // Si todo está correcto, se agrega la info del usuario al objeto `req` para que esté disponible en los siguientes middleware/controladores
     req.usuario = {
-      id: decoded.usuario_id,
+      usuario_id: decoded.usuario_id,
       correo: decoded.correo,
       id_rol: decoded.id_rol
     };

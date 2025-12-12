@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Importamos el pool de conexiones para realizar consultas a la base de datos
 import { pool } from '../config/db.js';
 
@@ -20,6 +21,10 @@ export const listarResenas = async (req, res) => {
 
     // Enviamos las reseñas obtenidas como respuesta
     res.json(rows);
+=======
+
+
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
   } catch (error) {
     // Mostramos el error en consola y devolvemos un mensaje genérico al cliente
     console.error('Error al obtener reseñas:', error);

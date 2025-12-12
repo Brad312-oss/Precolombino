@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import cors from 'cors'; // Middleware para habilitar CORS y permitir solicitudes desde otros dominios
 import express from 'express'; // Framework para crear el servidor y manejar rutas
 import path from 'path'; // Utilidad para manejar rutas de archivos y directorios
@@ -13,6 +14,8 @@ app.use(express.json()); // Middleware para parsear JSON en el cuerpo de las sol
 
 // Sirve archivos estáticos (como imágenes) desde la carpeta 'uploads' cuando se accede a /uploads en la URL
 app.use('/uploads', express.static('uploads'));
+=======
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
 
 // Estas dos líneas permiten obtener la ruta absoluta del directorio actual (equivalente a __dirname en CommonJS)
 const __filename = fileURLToPath(import.meta.url);
@@ -55,5 +58,14 @@ app.get('/', (req, res) => {
 
 // Arranca el servidor en el puerto 3000 y muestra un mensaje en consola cuando está listo
 app.listen(3000, () => {
+<<<<<<< HEAD
   console.log('Servidor corriendo en http://localhost:3000');
+<<<<<<< HEAD
 });
+=======
+});
+=======
+  console.log('Servidor corriendo en https://precolombinos-fronend.onrender.com');
+});
+>>>>>>> 8114d6d0d961ebe802c63e4edd7b4facaeb91e12
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7

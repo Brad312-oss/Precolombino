@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const cedula = getValue('cedula');
             const telefono = getValue('telefono');
             const direccion = getValue('direccion');
-            const fecha_registro = getValue('fecha_registro');
             const contraseña = getValue('contrasena');
 
             // Envía los datos al servidor con una petición POST para registrar al usuario
@@ -43,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     cedula,
                     telefono,
                     direccion,
-                    fecha_registro,
                     contraseña
                 })
             });

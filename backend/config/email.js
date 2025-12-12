@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 
+<<<<<<< HEAD
 // Creamos un "transporter", que es el objeto responsable de enviar correos.
 // Aquí estamos usando el servicio de Gmail y autenticándonos con las credenciales guardadas en variables de entorno.
 export const transporter = nodemailer.createTransport({
@@ -16,6 +17,9 @@ export const transporter = nodemailer.createTransport({
 });
 
 // Esta función permite enviar un correo genérico.
+=======
+un correo genérico.
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
 // Recibe como parámetros: destinatario (to), asunto (subject) y el contenido en formato HTML (html).
 export const enviarCorreoGenerico = async (to, subject, html) => {
   await transporter.sendMail({

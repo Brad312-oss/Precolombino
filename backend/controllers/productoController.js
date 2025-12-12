@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Importamos funciones del modelo productoModel que permiten interactuar con la base de datos
 import {
   obtenerProductos,
@@ -23,6 +24,8 @@ export const listarProductos = async (req, res) => {
 // Controlador para obtener el stock de un producto por ID
 export const obtenerStockProducto = async (req, res) => {
   const { id } = req.params; // Obtenemos el ID del producto desde la URL
+=======
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
 
   try {
     const [rows] = await pool.query(

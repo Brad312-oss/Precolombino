@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Estilos generales para la página */
 body {
   margin: 0; /* Eliminar márgenes por defecto */
@@ -10,6 +11,9 @@ body {
 
 /* Estilos para el encabezado y la navegación */
 header {
+=======
+
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
   display: flex; /* Usar Flexbox para distribuir los elementos en el encabezado */
   flex-wrap: wrap; /* Permitir que los elementos se envuelvan si es necesario */
   justify-content: space-between; /* Espaciar los elementos a ambos extremos */

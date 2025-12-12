@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Importa express para manejar rutas
 import express from 'express';
 
@@ -10,6 +11,9 @@ import {
   eliminarProducto,
   obtenerReporteProductos,
   obtenerProductoDetalle
+=======
+
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7
 } from '../controllers/productoController.js';
 
 // Importa middleware para autenticación y autorización
@@ -80,4 +84,8 @@ router.put(
 router.get('/:id', obtenerProductoDetalle);
 
 // Exporta el router para usarlo en la app principal
+<<<<<<< HEAD
 export default router;
+=======
+export default router;
+>>>>>>> 1ff176f564291a3fca580acacaaf208b277bfcc7

@@ -22,7 +22,7 @@ function getTokenHeaders() {
 // Verifica que el usuario logueado sea administrador (rol 3)
 async function verificarAdmin() {
   try {
-    const res = await fetch('http://localhost:3000/api/auth/verificar', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/auth/verificar', {
       method: 'GET',
       headers: getTokenHeaders()
     });
@@ -50,7 +50,7 @@ async function verificarAdmin() {
 // Obtiene y muestra la lista de ventas en la tabla correspondiente
 async function listarVentas() {
   try {
-    const res = await fetch('http://localhost:3000/api/ventas/detalles', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/ventas/detalles', {
       method: 'GET',
       headers: getTokenHeaders()
     });
@@ -85,7 +85,7 @@ async function listarVentas() {
 // Muestra detalle de productos de una venta en una alerta
 async function verDetalleVenta(venta_id) {
   try {
-    const res = await fetch(`http://localhost:3000/api/ventas/detalles?id=${venta_id}`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/ventas/detalles?id=${venta_id}`, {
       method: 'GET',
       headers: getTokenHeaders()
     });
@@ -118,7 +118,7 @@ function mostrarFormularioEstado(venta_id, estadoActual) {
 // Actualiza el estado de la venta en el servidor
 async function actualizarEstadoVenta(venta_id, nuevoEstado) {
   try {
-    const res = await fetch(`http://localhost:3000/api/ventas/actualizar-estado/${venta_id}`, {
+    const res = await fetch(`https://precolombinos-fronend.onrender.com/api/ventas/actualizar-estado/${venta_id}`, {
       method: 'PUT',
       headers: getTokenHeaders(),
       body: JSON.stringify({ estado: nuevoEstado })
@@ -162,7 +162,7 @@ async function registrarVenta(e) {
   if (productos.length === 0) return alert('Agrega al menos un producto.');
 
   try {
-    const res = await fetch('http://localhost:3000/api/ventas', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/ventas', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ async function registrarVenta(e) {
 async function cargarClientes() {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('http://localhost:3000/api/usuarios/clientes', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/usuarios/clientes', {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -243,7 +243,7 @@ function agregarFilaProducto() {
 // Carga los productos desde el servidor para llenar el select de productos
 async function cargarOpcionesProducto(selectElement) {
   try {
-    const res = await fetch('http://localhost:3000/api/productos', {
+    const res = await fetch('https://precolombinos-fronend.onrender.com/api/productos', {
       headers: getTokenHeaders()
     });
     const productos = await res.json();
